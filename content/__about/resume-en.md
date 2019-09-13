@@ -1,13 +1,13 @@
 ---
 title: 'about'
-date: 2019-1-27 16:21:13
+date: 2019-9-14 00:04:37
 lang: 'en'
 ---
 
-# Your name
+# Chanyoung Lee
 
 <div align="center">
 
-_Thank you for reading my resume. If you want to contact me, Please send me an email._
+이력서는 준비 중입니다.
 
 </div>
