@@ -6,7 +6,7 @@ module.exports = {
   siteUrl: `https://changrea.io`, // Your blog site url
   social: {
     twitter: ``, // Your Twitter account
-    github: `cyBisu`, // Your GitHub account
+    github: `ChanGrea`, // Your GitHub account
     medium: ``, // Your Medium account
     facebook: ``, // Your Facebook account
   },

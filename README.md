@@ -2,4 +2,4 @@
 
 Powered by [Gatsby-starter-bee](https://github.com/JaeYeopHan/gatsby-starter-bee)
 
-<sub><sup>Written by <a href="https://github.com/cyBisu">@ChanGrea</a></sup></sub><small>✌</small>
+<sub><sup>Written by <a href="https://github.com/ChanGrea">@ChanGrea</a></sup></sub><small>✌</small>

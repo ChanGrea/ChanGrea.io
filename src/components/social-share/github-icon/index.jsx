@@ -4,7 +4,11 @@ import './index.scss'
 
 export const GitHubIcon = () => {
   return (
-    <a href="https://github.com/cyBisu" className="github" aria-label="GitHub">
+    <a
+      href="https://github.com/ChanGrea"
+      className="github"
+      aria-label="GitHub"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
