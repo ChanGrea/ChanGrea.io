@@ -19,11 +19,7 @@ category: Web
 
 ## 1\. VSCode Extension 설치
 
-<div style="text-align: center">
-
-![](http://cfile25.uf.tistory.com/image/992908465CE5017A2CB28B)
-
-</div>
+![](./img/eslint-prettier-1.jpg)
 
 먼저 VSCode를 설치했다는 가정 하에 아래 2가지 Extension을 설치한다.
 
@@ -34,13 +30,13 @@ category: Web
 
 ### :heavy_check_mark: ESLint
 
-![](http://cfile25.uf.tistory.com/image/996B0F445CE50198366A84)
+![](./img/eslint-prettier-2.png)
 
 _ESLint는 자바스크립트의 문법을 체크해주는 도구이다._
 
 ### :heavy_check_mark: Prettier
 
-![](http://cfile8.uf.tistory.com/image/992379365CE501A81FD447)
+![](./img/eslint-prettier-3.PNG)
 
 _Prettier는 Code Formatting 도구이며, 코드를 규칙에 따라 정렬해주고, 빠진 세미콜론을 자동으로 채워주는 등의
 기능을 한다._
@@ -97,7 +93,7 @@ _Prettier는 Code Formatting 도구이며, 코드를 규칙에 따라 정렬해�
 
 > 끄고 싶은 에러는 0, 그리고 경고처리만 하고 싶은 에러는 1로 처리
 
-![](http://cfile27.uf.tistory.com/image/9912D9475CE501C22E818B)
+![](./img/eslint-prettier-4.jpg)
 
 > 위의 경고 메세지를 없애고 싶다면 아래와 같이 추가한다.
 
@@ -117,11 +113,11 @@ _Prettier는 Code Formatting 도구이며, 코드를 규칙에 따라 정렬해�
 
 #### `File - Preferences - Settings`
 
-![](http://cfile26.uf.tistory.com/image/99B42E3D5CE501E802EF7F)
+![](./img/eslint-prettier-5.jpg)
 
 #### `"Format JavaScript" 검색 - Javascript > Format: Enable 체크해제`
 
-![](http://cfile24.uf.tistory.com/image/9993923D5CE501F4116D90)
+![](./img/eslint-prettier-6.jpg)
 
 ### :heavy_check_mark: Prettier 설정
 
@@ -144,12 +140,12 @@ _Prettier는 Code Formatting 도구이며, 코드를 규칙에 따라 정렬해�
 
 #### `File - Preferences - Settings`
 
-![](http://cfile22.uf.tistory.com/image/9907C83E5CE5023C0250D7)
+![](./img/eslint-prettier-7.jpg)
 
 #### `"format on save" 검색 - Editor: Format On Save 체크`
 
-![](http://cfile2.uf.tistory.com/image/99A164365CE50265302BF4)
+![](./img/eslint-prettier-8.png)
 
 #### `"ESLint" 검색 - Eslint: Auto Fix On Save 체크`
 
-![](http://cfile2.uf.tistory.com/image/99D075455CE502CF36519D)
+![](./img/eslint-prettier-9.png)
