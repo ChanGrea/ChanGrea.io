@@ -11,10 +11,18 @@ module.exports = {
     facebook: ``, // Your Facebook account
   },
   icon: `content/assets/felog.png`, // Add your favicon
-  keywords: [`blog`],
+  keywords: [
+    `blog`,
+    `javascript`,
+    `web`,
+    `react`,
+    `vue`,
+    `frontend`,
+    `development`,
+  ],
   comment: {
     disqusShortName: '', // Your disqus-short-name. check disqus.com.
-    utterances: '', // Your repository for archive comment
+    utterances: 'ChanGrea/ChanGrea.io', // Your repository for archive comment
   },
   configs: {
     countOfInitialPost: 10, // Config your initial count of post
