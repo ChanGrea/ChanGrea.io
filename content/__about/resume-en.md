@@ -4,10 +4,16 @@ date: 2019-9-14 00:04:37
 lang: 'en'
 ---
 
-# Chanyoung Lee
+# 👨🏼‍💻 Chanyoung Lee (ChanGrea)
 
 <div align="center">
 
-이력서는 준비 중입니다.
+`Chan`(young is) `Grea`(t).<br/>
+I'm a developer trying to be the best at anything.<br/>
+One more step for a better tomorrow than yesterday...
+
+`#Javascript` `#React` `#GIS` `#Java`
+
+---
 
 </div>
