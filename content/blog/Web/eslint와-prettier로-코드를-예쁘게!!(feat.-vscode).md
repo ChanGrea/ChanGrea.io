@@ -1,7 +1,7 @@
 ---
 title: ESLint와 Prettier로 코드를 예쁘게!!(feat. VScode)
 date: 2019-09-15 19:09:62
-category: Web
+category: web
 ---
 
 ## 0. 들어가기 전

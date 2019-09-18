@@ -1,7 +1,7 @@
 ---
 title: '[JS] Hoisting(호이스팅)'
 date: 2019-09-14 01:09:23
-category: Javascript
+category: javascript
 ---
 
 ## Hoisting
