@@ -45,7 +45,7 @@ category: javascript
 - '**strict mode**'에서 javascript code를 실행한다.
 - 선언하지 않은 variable, object를 사용/수정/삭제 할 수 없다.
 - 함수 호이스팅도 제한된다.
-- script나 function 시작 부분에 **"use script";** 을 선언함으로써 사용
+- script나 function 시작 부분에 **"use strict;"** 을 선언함으로써 사용
 - **IE9에서는 지원하지 않는다.**
 
 ### :point_right: String.trim()
@@ -53,8 +53,8 @@ category: javascript
 - string의 공백 제거
 
   ```javascript
-  var str = '       Hello World!        '
-  console.log(str.trim()) // Hello World!
+  var str = '       Hello World!        ';
+  console.log(str.trim()); // Hello World!
   ```
 
 ### :point_right: Array.isArray()
@@ -62,8 +62,8 @@ category: javascript
 - Object가 Array인지 검사
 
   ```javascript
-  var fruits = ['Banana', 'Orange', 'Apple', 'Mango']
-  console.log(Array.isArray(fruits)) // true
+  var fruits = ['Banana', 'Orange', 'Apple', 'Mango'];
+  console.log(Array.isArray(fruits)); // true
   ```
 
 ### :point_right: Array.forEach()
@@ -71,15 +71,15 @@ category: javascript
 - Array의 element들을 하나씩 호출
 
   ```javascript
-  var txt = ''
-  var numbers = [45, 4, 9, 16, 25]
-  numbers.forEach(myFunction)
+  var txt = '';
+  var numbers = [45, 4, 9, 16, 25];
+  numbers.forEach(myFunction);
 
   function myFunction(value) {
-    txt = txt + value + ' '
+  	txt = txt + value + ' ';
   }
 
-  console.log(txt) // 45 4 9 16 25
+  console.log(txt); // 45 4 9 16 25
   ```
 
 ### :point_right: Array.map()
@@ -87,11 +87,11 @@ category: javascript
 - Array를 순회하면서 새로운 Array를 만든다.(기존에 있던 Array는 변경되지 않는다.)
 
   ```javascript
-  var numbers1 = [45, 4, 9, 16, 25]
-  var numbers2 = numbers1.map(myFunction) // [90, 8, 18, 32, 50]
+  var numbers1 = [45, 4, 9, 16, 25];
+  var numbers2 = numbers1.map(myFunction); // [90, 8, 18, 32, 50]
 
   function myFunction(value, index, array) {
-    return value * 2
+  	return value * 2;
   }
   ```
 
@@ -100,11 +100,11 @@ category: javascript
 - 조건에 맞는 새로운 Array를 생성
 
   ```javascript
-  var numbers = [45, 4, 9, 16, 25]
-  var over18 = numbers.filter(myFunction) // [45, 25]
+  var numbers = [45, 4, 9, 16, 25];
+  var over18 = numbers.filter(myFunction); // [45, 25]
 
   function myFunction(value, index, array) {
-    return value > 18
+  	return value > 18;
   }
   ```
 
@@ -115,11 +115,11 @@ category: javascript
 - 기존에 있던 Array는 변경되지 않는다.
 
   ```javascript
-  var numbers1 = [45, 4, 9, 16, 25]
-  var sum = numbers1.reduce(myFunction) // 99
+  var numbers1 = [45, 4, 9, 16, 25];
+  var sum = numbers1.reduce(myFunction); // 99
 
   function myFunction(total, value, index, array) {
-    return total + value
+  	return total + value;
   }
   ```
 
@@ -133,11 +133,11 @@ category: javascript
 - 모든 Array의 Element들이 주어진 조건을 만족하는지 검사
 
   ```javascript
-  var numbers = [45, 4, 9, 16, 25]
-  var allOver18 = numbers.every(myFunction) // false
+  var numbers = [45, 4, 9, 16, 25];
+  var allOver18 = numbers.every(myFunction); // false
 
   function myFunction(value, index, array) {
-    return value > 18
+  	return value > 18;
   }
   ```
 
@@ -146,11 +146,11 @@ category: javascript
 - Array의 Element 중에 주어진 조건을 만족하는 Element가 있는지 검사
 
   ```javascript
-  var numbers = [45, 4, 9, 16, 25]
-  var someOver18 = numbers.some(myFunction) // true
+  var numbers = [45, 4, 9, 16, 25];
+  var someOver18 = numbers.some(myFunction); // true
 
   function myFunction(value, index, array) {
-    return value > 18
+  	return value > 18;
   }
   ```
 
@@ -159,8 +159,8 @@ category: javascript
 - Array의 Element 중 주어진 value와 같은 element의 위치를 반환 ( 제일 첫번째 위치는 0이다. )
 
   ```javascript
-  var fruits = ['Apple', 'Orange', 'Apple', 'Mango']
-  var a = fruits.indexOf('Apple') // 0
+  var fruits = ['Apple', 'Orange', 'Apple', 'Mango'];
+  var a = fruits.indexOf('Apple'); // 0
   ```
 
 ### :point_right: Array.lastIndexOf()
@@ -168,8 +168,8 @@ category: javascript
 - Array.indexOf()와 같지만, Array의 뒷 쪽부터 순회한다.
 
   ```javascript
-  var fruits = ['Apple', 'Orange', 'Apple', 'Mango']
-  var a = fruits.lastIndexOf('Apple') // 2
+  var fruits = ['Apple', 'Orange', 'Apple', 'Mango'];
+  var a = fruits.lastIndexOf('Apple'); // 2
   ```
 
 ### :point_right: JSON.parse()
@@ -179,7 +179,7 @@ category: javascript
 - 물론 데이터는 JSON 형태이다.
 
   ```javascript
-  var obj = JSON.parse('{"name":"John", "age":30, "city":"New York"}')
+  var obj = JSON.parse('{"name":"John", "age":30, "city":"New York"}');
   ```
 
 ### :point_right: JSON.stringify()
@@ -187,8 +187,8 @@ category: javascript
 - JSON 형태의 데이터를 웹 서버로 전송할 때 string 타입으로 바꿔준다.
 
   ```javascript
-  var obj = { name: 'John', age: 30, city: 'New York' }
-  var myJSON = JSON.stringify(obj)
+  var obj = { name: 'John', age: 30, city: 'New York' };
+  var myJSON = JSON.stringify(obj);
   ```
 
 ### :point_right: Date.now()
@@ -196,5 +196,5 @@ category: javascript
 - 시간을 millisecond 단위로 반환
 
   ```javascript
-  console.log(Date.now() === new Date().getTime()) // true
+  console.log(Date.now() === new Date().getTime()); // true
   ```
