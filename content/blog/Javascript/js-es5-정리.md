@@ -6,11 +6,11 @@ category: javascript
 
 # \[Javascript\] ES5 (ECMAScript 5)
 
-자바스크립트를 접했다면 흔히 ES5, ES6, ECMA 어쩌고...에 대해서 한번 쯤은 들어봤을 것이다. 이번 포스팅부터는 이것들에 대해서 정리를 하고자 한다.
+자바스크립트를 접했다면 흔히 `ES5`, `ES6`, `ECMA` 어쩌고...에 대해서 한번 쯤은 들어봤을 것이다. 이번 포스팅부터는 이것들에 대해서 정리를 하고자 한다.
 
 ## ECMAScript란 무엇인가?
 
-자바스크립트는 1995년에 Brendan Eich라는 사람이 발명했다고 한다. 그리고 1997년에 ECMA 표준이 되었다고 한다. **ECMAScript**는 Ecma 인터내셔널의 ECMA-262 기술 규격에 정의된 **표준화된 스크립트 프로그래밍 언어**이다. 자바스크립트를 표준화하기 위해 만들어졌고 지금도 자바스크립트가 제일 잘 알려져 있지만, 액션스크립트, J스크립트 등 다른 것들도 포함된다고 한다.
+자바스크립트는 1995년에 `Brendan Eich`라는 사람이 발명했다고 한다. 그리고 1997년에 ECMA 표준이 되었다고 한다. `**ECMAScript**`는 Ecma 인터내셔널의 ECMA-262 기술 규격에 정의된 **표준화된 스크립트 프로그래밍 언어**이다. 자바스크립트를 표준화하기 위해 만들어졌고 지금도 자바스크립트가 제일 잘 알려져 있지만, 액션스크립트, J스크립트 등 다른 것들도 포함된다고 한다.
 
 ## ES5 (ECMAScript 5)
 
@@ -22,28 +22,25 @@ category: javascript
 
 ![](./img/browserList.png)
 
-ES5의 주요 특징은 아래와 같다.
+`ES5의 주요 특징`은 아래와 같다.
 
-```markdown
-- ES5의 주요 특징
-  - 'use strict'
-  - String.trim()
-  - Array.isArray()
-  - Array.forEach()
-  - Array.map()
-  - Array.filter()
-  - Array.reduce()
-  - Array.reduceRight()
-  - Array.every()
-  - Array.some()
-  - Array.indexOf()
-  - Array.lastIndexOf()
-  - JSON.parse()
-  - JSON.stringify()
-  - Date.now()
-```
+- ['use strict'](#a-nameusestricta-use-strict)
+- [String.trim()](#-stringtrim)
+- [Array.isArray()](#-arrayisarray)
+- [Array.forEach()](#-arrayforeach)
+- [Array.map()](#-arraymap)
+- [Array.filter()](#-arrayfilter)
+- [Array.reduce()](#-arrayreduce)
+- [Array.reduceRight()](#-arrayreduceright)
+- [Array.every()](#-arrayevery)
+- [Array.some()](#-arraysome)
+- [Array.indexOf()](#-arrayindexof)
+- [Array.lastIndexOf()](#-arraylastindexof)
+- [JSON.parse()](#-jsonparse)
+- [JSON.stringify()](#-jsonstringify)
+- [Date.now()](#-datenow)
 
-### 'use strict'
+### <a name="usestrict"></a>:point_right: 'use strict'
 
 - '**strict mode**'에서 javascript code를 실행한다.
 - 선언하지 않은 variable, object를 사용/수정/삭제 할 수 없다.
@@ -51,7 +48,7 @@ ES5의 주요 특징은 아래와 같다.
 - script나 function 시작 부분에 **"use script";** 을 선언함으로써 사용
 - **IE9에서는 지원하지 않는다.**
 
-### String.trim()
+### :point_right: String.trim()
 
 - string의 공백 제거
 
@@ -60,7 +57,7 @@ ES5의 주요 특징은 아래와 같다.
   console.log(str.trim()) // Hello World!
   ```
 
-### Array.isArray()
+### :point_right: Array.isArray()
 
 - Object가 Array인지 검사
 
@@ -69,7 +66,7 @@ ES5의 주요 특징은 아래와 같다.
   console.log(Array.isArray(fruits)) // true
   ```
 
-### Array.forEach()
+### :point_right: Array.forEach()
 
 - Array의 element들을 하나씩 호출
 
@@ -85,7 +82,7 @@ ES5의 주요 특징은 아래와 같다.
   console.log(txt) // 45 4 9 16 25
   ```
 
-### Array.map()
+### :point_right: Array.map()
 
 - Array를 순회하면서 새로운 Array를 만든다.(기존에 있던 Array는 변경되지 않는다.)
 
@@ -98,7 +95,7 @@ ES5의 주요 특징은 아래와 같다.
   }
   ```
 
-### Array.filter()
+### :point_right: Array.filter()
 
 - 조건에 맞는 새로운 Array를 생성
 
@@ -111,7 +108,7 @@ ES5의 주요 특징은 아래와 같다.
   }
   ```
 
-### Array.reduce()
+### :point_right: Array.reduce()
 
 - 각 element를 순회하면서 새로운 value를 생성한다.(즉, Array를 하나의 single value로 줄인다.)
 
@@ -126,12 +123,12 @@ ES5의 주요 특징은 아래와 같다.
   }
   ```
 
-### Array.reduceRight()
+### :point_right: Array.reduceRight()
 
 - Array.reduce()와 같은 기능이지만, 오른쪽부터 순회한다.
 - 기존에 있던 Array는 변경되지 않는다.
 
-### Array.every()
+### :point_right: Array.every()
 
 - 모든 Array의 Element들이 주어진 조건을 만족하는지 검사
 
@@ -144,7 +141,7 @@ ES5의 주요 특징은 아래와 같다.
   }
   ```
 
-### Array.some()
+### :point_right: Array.some()
 
 - Array의 Element 중에 주어진 조건을 만족하는 Element가 있는지 검사
 
@@ -157,7 +154,7 @@ ES5의 주요 특징은 아래와 같다.
   }
   ```
 
-### Array.indexOf()
+### :point_right: Array.indexOf()
 
 - Array의 Element 중 주어진 value와 같은 element의 위치를 반환 ( 제일 첫번째 위치는 0이다. )
 
@@ -166,7 +163,7 @@ ES5의 주요 특징은 아래와 같다.
   var a = fruits.indexOf('Apple') // 0
   ```
 
-### Array.lastIndexOf()
+### :point_right: Array.lastIndexOf()
 
 - Array.indexOf()와 같지만, Array의 뒷 쪽부터 순회한다.
 
@@ -175,7 +172,7 @@ ES5의 주요 특징은 아래와 같다.
   var a = fruits.lastIndexOf('Apple') // 2
   ```
 
-### JSON.parse()
+### :point_right: JSON.parse()
 
 - 웹 서버로부터 데이터를 받았을 때 string 타입의 데이터를 javascript의 object 타입으로 바꿔준다.
 
@@ -185,7 +182,7 @@ ES5의 주요 특징은 아래와 같다.
   var obj = JSON.parse('{"name":"John", "age":30, "city":"New York"}')
   ```
 
-### JSON.stringify()
+### :point_right: JSON.stringify()
 
 - JSON 형태의 데이터를 웹 서버로 전송할 때 string 타입으로 바꿔준다.
 
@@ -194,7 +191,7 @@ ES5의 주요 특징은 아래와 같다.
   var myJSON = JSON.stringify(obj)
   ```
 
-### Date.now()
+### :point_right: Date.now()
 
 - 시간을 millisecond 단위로 반환
 
