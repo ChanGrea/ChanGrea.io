@@ -67,3 +67,80 @@ let Rectangle = class Rectangle2 {
 console.log(Rectangle.name);
 // output: "Rectangle2"
 ```
+
+## Class Body와 Method
+
+### :point_right: Strict Mode
+
+Class의 Body( { } )는 Strict Mode에서 실행된다.
+
+### :point_right: Constructor
+
+아마도 Java 개발을 해봤다면 익숙할 것이다.
+
+Constructor Method는 객체가 생성될 때 `초기화` 역할을 한다.
+
+Class에서 상위 Class의 Constructor를 호출할 때 `super` 키워드를 사용한다.
+
+### :point_right: Prototype Method
+
+```javascript
+class Rectangle {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+  // Getter
+  get area() {
+    return this.calcArea();
+  }
+  // Method
+  calcArea() {
+    return this.height * this.width;
+  }
+}
+
+const square = new Rectangle(10, 10);
+
+console.log(square.area); // 100
+```
+
+위 코드에서 `get`이라는 키워드는 Class의 Getter 역할을 한다. 보통 일반 Method로 정의했다면 아래와 같이 함수 호출을 해야 할 것이다. 하지만 위에서는 마치 square 객체의 멤버 변수처럼 호출하고 있다.
+
+```javascript
+...
+area() {
+  return this.calcArea();
+}
+...
+console.log(squrare.area());
+```
+
+### :point_right: Static Method
+
+위에서는 class의 Method를 사용하기 위해서는 인스턴스화 해서 사용했다. 하지만, Class에서는 **인스턴스화를 하지 않고** Method를 사용할 수 있게 `static` 키워드를 제공한다.
+
+하지만 `static Method`는 **인스턴스 객체에서는 사용할 수 없다**는 점에 주의하자.
+
+```javascript
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  static distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+
+    return Math.hypot(dx, dy);
+  }
+}
+
+const p1 = new Point(5, 5);
+const p2 = new Point(10, 10);
+p1.distance; //undefined
+p2.distance; //undefined
+
+console.log(Point.distance(p1, p2)); // 7.0710678118654755
+```
