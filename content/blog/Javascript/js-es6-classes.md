@@ -31,10 +31,10 @@ Class를 정의하는 방법에는 Class를 선언하는 것과 Class 표현식�
 
 ```javascript
 class Polygon {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
 }
 ```
 
@@ -42,27 +42,27 @@ class Polygon {
 
 ### :point_right: Class expressions
 
-Class를 정의하는 다른 방법은 Variable과 함께 표현식으로 나타내는 것이다. 
+Class를 정의하는 다른 방법은 Variable과 함께 표현식으로 나타내는 것이다.
 
 아래와 같이 class 이름을 지정하는 방식(named)과 그렇지 않은 방식(unnamed) 모두 가능한데, named 같은 경우에 class 자체 `name` property를 할당 받기 때문에 아래와 같이 class 이름이 출력된다.
 
 ```javascript
 // unnamed
 let Rectangle = class {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
 };
 console.log(Rectangle.name);
 // output: "Rectangle"
 
 // named
 let Rectangle = class Rectangle2 {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
 };
 console.log(Rectangle.name);
 // output: "Rectangle2"
@@ -86,18 +86,18 @@ Class에서 상위 Class의 Constructor를 호출할 때 `super` 키워드를 �
 
 ```javascript
 class Rectangle {
-  constructor(height, width) {
-    this.height = height;
-    this.width = width;
-  }
-  // Getter
-  get area() {
-    return this.calcArea();
-  }
-  // Method
-  calcArea() {
-    return this.height * this.width;
-  }
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
+	// Getter
+	get area() {
+		return this.calcArea();
+	}
+	// Method
+	calcArea() {
+		return this.height * this.width;
+	}
 }
 
 const square = new Rectangle(10, 10);
@@ -124,17 +124,17 @@ console.log(squrare.area());
 
 ```javascript
 class Point {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
+	constructor(x, y) {
+		this.x = x;
+		this.y = y;
+	}
 
-  static distance(a, b) {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
+	static distance(a, b) {
+		const dx = a.x - b.x;
+		const dy = a.y - b.y;
 
-    return Math.hypot(dx, dy);
-  }
+		return Math.hypot(dx, dy);
+	}
 }
 
 const p1 = new Point(5, 5);
@@ -144,3 +144,168 @@ p2.distance; //undefined
 
 console.log(Point.distance(p1, p2)); // 7.0710678118654755
 ```
+
+### :point_right: Public과 Private
+
+Java에서는 `public`, `protected`, `private` 그리고 `default` 4개의 키워드로 접근을 제어할 수 있다. 그렇다면 Javascript에서는 어떨까?
+
+ES6 Class에서도 Public과 Private 필드 선언을 지원한다.
+
+#### :banana: Public 필드 선언
+
+```javascript
+class Rectangle {
+	height = 0;
+	width;
+	constructor(height, width) {
+		this.height = height;
+		this.width = width;
+	}
+}
+```
+
+위와 같이 class body 내부에서 가장 앞에 선언함으로써 **self-documenting 역할**을 함과 동시에 **public 멤버 변수**의 역할도 한다.
+
+> 보면 알겠지만, default value를 지정하지 않아도 된다.
+
+#### :banana: Private 필드 선언
+
+```javascript
+class Rectangle {
+	#height = 0;
+	#width;
+	constructor(height, width) {
+		this.#height = height;
+		this.#width = width;
+	}
+}
+```
+
+Private 필드는 `#` 을 붙여줌으로써 선언할 수 있다.
+
+당연히 class 밖에서 접근할 수 없으며, 오직 class body 안에서만 읽고 쓸 수 있다.
+
+> Private 필드는 class body에서 무조건 맨 앞에 선언되어야 한다.
+
+## 상속 관련 특징
+
+class 상속 관련하여 아래 특징이 있다. 하지만 여기서 **[species pattern](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Species)**과 **[mix-in](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins)**은 다루지 않고 MDN을 참고...(아직 두 개념에 대한 이해가 부족함... :worried:)
+
+- `extends`
+- `species`
+- `super`
+- `mix-in`
+
+### :point_right: extends
+
+`extends` 키워드는 상위(부모) 클래스를 상속하기 위해 하위(자식) 클래스에서 사용되는 키워드다.
+
+#### :banana: 기본 예제 (class 기반 상속)
+
+```javascript
+class Animal {
+	constructor(name) {
+		this.name = name;
+	}
+
+	speak() {
+		console.log(`${this.name} makes a noise.`);
+	}
+}
+
+class Dog extends Animal {
+	constructor(name) {
+		super(name); // call the super class constructor and pass in the name parameter
+	}
+
+	speak() {
+		console.log(`${this.name} barks.`);
+	}
+}
+
+let d = new Dog('Mitzie');
+d.speak(); // Mitzie barks.
+```
+
+#### :banana: 함수 기반 상속
+
+function으로 작성된 상위 클래스를 상속받는 예제이다.
+
+```javascript
+function Animal(name) {
+	this.name = name;
+}
+
+Animal.prototype.speak = function() {
+	console.log(`${this.name} makes a noise.`);
+};
+
+class Dog extends Animal {
+	speak() {
+		console.log(`${this.name} barks.`);
+	}
+}
+
+let d = new Dog('Mitzie');
+d.speak(); // Mitzie barks.
+
+//NB: For similar methods, the child's method takes precedence over parent's method
+```
+
+#### :banana: Object 기반 상속
+
+> 원래 class는 object를 상속할 수 없다.
+
+하지만 `Object.setPrototypeOf()`를 이용하면 가능하다.
+
+```javascript
+const Animal = {
+	speak() {
+		console.log(`${this.name} makes a noise.`);
+	},
+};
+
+class Dog {
+	constructor(name) {
+		this.name = name;
+	}
+}
+
+// If you do not do this you will get a TypeError when you invoke speak
+Object.setPrototypeOf(Dog.prototype, Animal);
+
+let d = new Dog('Mitzie');
+d.speak(); // Mitzie makes a noise.
+```
+
+### :point_right: super
+
+`super` 키워드는 상속받은 상위 클래스의 메소드를 호출하기 위해서 사용된다.
+
+```javascript
+class Cat {
+	constructor(name) {
+		this.name = name;
+	}
+
+	speak() {
+		console.log(`${this.name} makes a noise.`);
+	}
+}
+
+class Lion extends Cat {
+	speak() {
+		super.speak();
+		console.log(`${this.name} roars.`);
+	}
+}
+
+let l = new Lion('Fuzzy');
+l.speak();
+// Fuzzy makes a noise.
+// Fuzzy roars.
+```
+
+## Reference
+
+- [MDN Classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
