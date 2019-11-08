@@ -1,20 +1,55 @@
 @import '../../styles/variables.scss';
 
 .thumbnail {
-  display: block;
-  margin-bottom: 12px;
-  padding: 4px;
-  padding-bottom: 12px;
-  box-shadow: none;
-  transition: text-shadow 0.3s, opacity 0.4s;
-  opacity: 0;
+	display: block;
+	margin-bottom: 12px;
+	padding: 4px;
+	padding-bottom: 12px;
+	box-shadow: none;
+	transition: text-shadow 0.3s, opacity 0.4s;
+	opacity: 0;
 
-  p {
-    font-size: 90%;
-    line-height: 1.4;
-  }
+	p {
+		font-size: 90%;
+		line-height: 1.4;
+	}
+
+	.thumbnailBox {
+		position: relative;
+		padding: 15px;
+
+		-webkit-box-shadow: 5px 5px 15px -10px rgba(0, 0, 0, 0.75);
+		-moz-box-shadow: 5px 5px 15px -10px rgba(0, 0, 0, 0.75);
+		box-shadow: 5px 5px 15px -10px rgba(0, 0, 0, 0.75);
+
+		&:hover {
+			background-color: #fcfeff;
+		}
+
+		.meta {
+			* {
+				margin: 0.25rem 6px 0.25rem 0;
+				border-width: 2px;
+				white-space: normal;
+				box-sizing: border-box;
+
+				display: block;
+				position: absolute;
+				top: 0;
+			}
+
+			.date {
+				left: 15px;
+			}
+
+			.category {
+				right: 5px;
+				border-style: none none solid none;
+			}
+		}
+	}
 }
 
 .thumbnail.visible {
-  opacity: 1;
+	opacity: 1;
 }
