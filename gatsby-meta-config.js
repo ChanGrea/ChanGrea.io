@@ -33,5 +33,5 @@ module.exports = {
 	share: {
 		facebookAppId: '2403669246539902', // Add facebookAppId for using facebook share feature v3.2
 	},
-	ga: '', // Add your google analytics tranking ID
+	ga: 'k39335', // Add your google analytics tranking ID
 };
