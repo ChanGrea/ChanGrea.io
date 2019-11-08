@@ -51,8 +51,13 @@ body.dark {
 		p {
 			color: $dark-middle-font-color;
 		}
-		.meta {
-			color: $dark-thumnail-meta-color;
+		.thumbnailBox {
+			.meta {
+				color: $dark-thumbnail-meta-color;
+			}
+			&:hover {
+				background-color: $dark-hover-background-color;
+			}
 		}
 		&:hover {
 			text-shadow: $dark-hover-text-shadow;
