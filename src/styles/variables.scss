@@ -1,5 +1,5 @@
 // app
-$theme-gradient: linear-gradient(72deg, #291e95, #cc007a);
+$theme-gradient: linear-gradient(72deg, #32941f, #496943, #226615, #3af061);
 $top-header-text-color: #fff;
 
 /**
@@ -39,7 +39,8 @@ $light-category-item-color: #fff;
  * @dark theme
  */
 $dark-background-color: #282c35;
-$dark-link-color: #bb72ec;
+$dark-hover-background-color: #2b303a;
+$dark-link-color: #3af061;
 
 $dark-lightest-font-color: #fff;
 $dark-light-font-color: #eeeeee;
@@ -56,3 +57,5 @@ $dark-category-text-color: #d8d7d7;
 
 $dark-category-highlight-border-color: #666;
 $dark-category-highlight-text-color: #fff;
+
+$dark-thumbnail-meta-color: #2bbb4a;
