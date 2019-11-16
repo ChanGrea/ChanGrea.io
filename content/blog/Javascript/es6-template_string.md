@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - Template Strings(Template Literals)'
+title: 'ES6 - Template Strings(Template Literals)'
 date: 2019-10-15 23:10:99
 category: javascript
 ---

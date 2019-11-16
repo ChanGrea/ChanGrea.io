@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - Arrow Function'
+title: 'ES6 - Arrow Function'
 date: 2019-09-30 21:09:95
 category: javascript
 ---
@@ -35,7 +35,9 @@ square(3); // 9
 #### :point_right: 중괄호를 생략한 한 줄 표현식은 중괄호와 함께 리턴한 것과 동일하다.
 
 ```javascript
-let square2 = (x) => {return x * x;};
+let square2 = x => {
+	return x * x;
+};
 
 square2(3); // 9
 ```

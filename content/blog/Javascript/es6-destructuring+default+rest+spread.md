@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - Destructuring + Default + Rest + Spread'
+title: 'ES6 - Destructuring + Default + Rest + Spread'
 date: 2019-10-12 16:10:48
 category: javascript
 ---

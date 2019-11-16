@@ -1,5 +1,5 @@
 ---
-title: '[JS] Hoisting(호이스팅)'
+title: 'Hoisting(호이스팅)'
 date: 2019-09-14 01:09:23
 category: javascript
 ---
@@ -16,11 +16,11 @@ _ES6 문법이 표준화가 되면서 크게 신경쓰지 않아도 되는 부�
 
 ```js
 function getX() {
-  console.log(x) // undefined
-  var x = 100
-  console.log(x) // 100
+	console.log(x); // undefined
+	var x = 100;
+	console.log(x); // 100
 }
-getX()
+getX();
 ```
 
 다른 언어의 경우엔, 변수 x 를 선언하지 않고 출력하려 한다면 오류를 발생할 것이다. 하지만 자바스크립트에서는 `undefined`라고 하고 넘어간다.
@@ -31,12 +31,12 @@ getX()
 
 ```js
 function getX() {
-  var x
-  console.log(x)
-  x = 100
-  console.log(x)
+	var x;
+	console.log(x);
+	x = 100;
+	console.log(x);
 }
-getX()
+getX();
 ```
 
 선언문은 항시 자바스크립트 엔진 구동시 가장 최우선으로 해석하므로 호이스팅 되고, 할당 구문은 런타임 과정에서 이루어지기 때문에 호이스팅 되지 않는다.

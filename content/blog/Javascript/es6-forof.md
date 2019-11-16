@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - For...Of'
+title: 'ES6 - For...Of'
 date: 2019-10-19 22:10:98
 category: javascript
 ---

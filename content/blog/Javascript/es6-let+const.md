@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - let과 const'
+title: 'ES6 - let과 const'
 date: 2019-10-07 23:10:57
 category: javascript
 ---
