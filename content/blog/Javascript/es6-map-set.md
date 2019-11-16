@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - Map + Set (+ WeakMap, WeakSet)'
+title: 'ES6 - Map + Set (+ WeakMap, WeakSet)'
 date: 2019-10-20 13:10:43
 category: javascript
 ---

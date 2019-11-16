@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES6 - Classes'
+title: 'ES6 - Classes'
 date: 2019-10-02 22:10:59
 category: javascript
 ---

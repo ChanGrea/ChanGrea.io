@@ -1,5 +1,5 @@
 ---
-title: '[JS] RegExp(정규식)'
+title: 'RegExp(정규식)'
 date: 2019-09-28 23:09:07
 category: javascript
 ---

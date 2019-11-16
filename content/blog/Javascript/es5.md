@@ -1,5 +1,5 @@
 ---
-title: '[JS] ES5 정리'
+title: 'ES5 정리'
 date: 2019-09-18 23:09:80
 category: javascript
 ---
