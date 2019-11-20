@@ -70,12 +70,12 @@ category: network
         <td>Description</td>
     </thead>
     <tbody>
-        <tr style="background: lightyellow">
+        <tr style="background: yellowgreen">
             <td>1XX</td>
             <td>Informational<br/>(정보)</td>
             <td>정보 교환.</td>
         </tr>
-        <tr style="background: lightyellow">
+        <tr style="background: yellowgreen">
             <td>2XX</td>
             <td>Success(성공)</td>
             <td>데이터 전송이 성공적으로 이루어졌거나, 이해되었거나, 수락되었음.</td>
@@ -90,7 +90,7 @@ category: network
             <td>Non Content</td>
             <td>클라이언트의 요구를 처리했으나 전송할 데이터가 없음.</td>
         </tr>
-        <tr style="background: lightyellow">
+        <tr style="background: yellowgreen">
             <td>3XX</td>
             <td>Redirection<br/>(방향 바꿈)</td>
             <td>자료의 위치가 바뀌었음.</td>
@@ -100,7 +100,7 @@ category: network
             <td>Not modified</td>
             <td>클라이언트의 캐시에 이 문서가 저장되었고 선택적인 요청에 의해 수행됨<br/>(보통 지정된 날짜보다 더 나중의 문서만을 보여주도록 하는 If-Modified-Since 헤더의 경우).</td>
         </tr>
-        <tr style="background: lightyellow">
+        <tr style="background: yellowgreen">
             <td>4XX</td>
             <td>Client Error<br/>(클라이언트 오류)</td>
             <td>클라이언트 측의 오류. 주소를 잘못 입력하였거나 요청이 잘못 되었음.</td>
@@ -125,7 +125,7 @@ category: network
             <td>Not Acceptable</td>
             <td>받아들일 수 없음.</td>
         </tr>
-        <tr style="background: lightyellow">
+        <tr style="background: yellowgreen">
             <td>5XX</td>
             <td>Server Error<br/>(서버 오류)</td>
             <td>서버 측의 오류로 올바른 요청을 처리할 수 없음.</td>
