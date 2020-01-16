@@ -1,5 +1,5 @@
 ---
-title: Nginx에 React App 배포 경험
+title: Nginx에 React App 배포 경험 (feat. CI/CD)
 date: 2020-01-12 20:01:83
 category: tip
 ---
