@@ -1,7 +1,7 @@
 ---
 title: Nginx에 React App 배포 경험 (feat. CI/CD)
 date: 2020-01-12 20:01:83
-category: tip
+category: etc
 ---
 
 **Nginx**는 Apache Tomcat과 같은 웹 서버 소프트웨어라고 한다. (사실 이 전에는 Nginx가 물리적인 서버 자체 종류인 줄 알았다..:sweat:)
