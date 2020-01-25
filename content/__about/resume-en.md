@@ -1,6 +1,6 @@
 ---
 title: 'about'
-date: 2019-9-14 00:04:37
+date: 2020-1-25 15:46:37
 lang: 'en'
 ---
 
@@ -12,7 +12,7 @@ lang: 'en'
 I'm a developer trying to be the best at anything.<br/>
 One more step for a better tomorrow than yesterday...
 
-`#Javascript` `#React` `#GIS` `#Java`
+`#Javascript` `#React.js` `#Java` and more..
 
 ---
 
@@ -28,12 +28,19 @@ One more step for a better tomorrow than yesterday...
 
 ## KT
 
-|                 |                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------- |
-| **period**      | 18.10.29 ~ Current                                                                    |
-| **position**    | Software Developer                                                                    |
-| **description** | Develop Route Planning Algorithm and Analysis Tools belonging to GIS Server Dev team. |
-| **projects**    | RP Viewer(Analysis tool) Renewal to React App                                         |
+|                 |                                                 |
+| --------------- | ----------------------------------------------- |
+| **period**      | 20.01.24 ~ current                              |
+| **position**    | Software Developer                              |
+| **description** | Developer belonging to **SW Dev Project** team. |
+| **projects**    | <i>(to be added..)</i>                          |
+
+|                 |                                                                                           |
+| --------------- | ----------------------------------------------------------------------------------------- |
+| **period**      | 18.10.29 ~ 20.01.23                                                                       |
+| **position**    | Software Developer                                                                        |
+| **description** | Develop Route Planning Algorithm and Analysis Tools belonging to **GIS Server Dev** team. |
+| **projects**    | RP Viewer(Analysis tool) Renewal to React App                                             |
 
 ## Deawoo Information System
 
