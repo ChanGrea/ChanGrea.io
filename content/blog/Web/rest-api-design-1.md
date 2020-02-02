@@ -62,34 +62,196 @@ URI = scheme "://" <span style="color: yellow;">authority</span> "/" <span style
 - <u>서버명</u>과 <u>도메인명</u>으로 구성
 - 서버명 – www …
 - 도메인명 – test.co.kr
+- :heavy_plus_sign: 이 영역은 userinfo@host:port 형식으로 구성된다.
+  - userinfo : (option) username과 password로 구성된다. 
+  - host : 보통 **ip주소**가 들어간다.
+  - port : colon(:)이 붙고 그 뒤에 **포트번호**가 들어간다.
 
 #### path
+
+- 파일 시스템의 경로를 나타낸다.
+- 특정한 resource 하나를 나타내지만은 않다. (여러 개의 reousrce가 있는 위치를 나타냄)
 
 #### query
 
 - <u>폴더명</u>과 <u>파일명</u>으로 구성
 - 서버 내부 자원의 위치를 나타낸다.
 
+#### Fragment
+
+- (#)이 붙는다.
+- HTML에서 id로 식별된 어떤 특정 section으로 스크롤할 때 사용
+
 ### URI Format의 설계 원칙
 
 그럼 위 URI를 어떻게 설계해야 할까? 다시 한번 말하지만 아래 나오는 Rule들은 무조건 따라야 한다는 아니다. 어디까지나 **"Defacto"**이기 때문에 "이렇게 쓰는 것이 좋다" 정도 참고하자.
 
-#### :green_book: Rule: 앞에 붙는 슬래쉬(/)는 계층 과계를 나타내기 위해 사용되어야 한다.
+#### :green_book: Rule: 앞에 붙는 슬래쉬(/)는 계층 관계를 나타내기 위해 사용되어야 한다.
+
+  api.canvas.restapi.org**/shapes/polygons/quadrilaterals/squares**
+
+```
+shapes
+	ㄴ polygons
+			ㄴ quadrilaterals
+					ㄴ squares
+```
 
 #### :green_book: Rule: 뒤에 붙는 슬래쉬(/)는 URI에 포함되면 안된다.
 
+1. api.canvas.restapi.org/shapes/
+2. api.canvas.restapi.org/shapes
+
+대부분의 웹에서는 위 두 개의 URIs를 동일하게 간주한다.
+
+하지만 URI는 모든 문자는 식별자로 쓰인다.
+
+그렇기 때문에 위 두 개의 URIs는 각각 다른 리소스에 접근한 것으로 간주한다.
+
+따라서 REST API는 명확해야 한다.
+
+> 하지만 경우에 따라서 뒤에 슬래쉬가 붙은 경우에도 301 응답코드를 리턴하면서 redirect를 제공하기도 한다.
+
 #### :green_book: Rule: 하이픈(-)은 URI의 가독성을 향상시키기 위해 사용되어야 한다.
+
+api.example.restapi.org/blogs/mark-masse/entries/**this-is-my-first-post**
 
 #### :green_book: Rule: 언더바(\_)는 URI에서 사용하면 안된다.
 
+애플리케이션의 폰트에 따라서 언더바는 문자가 깨져 보이거나 숨겨져 보이기도 한다.
+
+따라서 이런 혼동을 피하기 위해서 언더바 대신에 **하이픈(-)**을 사용하기를 권장
+
 #### :green_book: Rule: URI path에서 소문자 사용을 권장한다.
 
+대문자는 때때로 문제를 야기할 수 있기 때문에 편리하게 소문자를 선호한다.
+
+1. http:\/\/api.example.restapi.org/my-folder/my-doc
+2. HTTP:\/\/API.EXAMPLE.RESTAPI.ORG/my-folder/my-doc
+3.  http:\/\/api.example.restapi.org/My-Folder/my-doc
+
+```markdown
+- 1번은 괜찮음
+- 2번은 1번과 같은 것으로 간주 (RFC 3986)
+- 3번은 1,2번과 같지 않다!!
+```
+
 #### :green_book: Rule: URI에서 파일 확장자는 포함되어서는 안된다.
+
+웹에서 URIs의 (.)은 파일 이름과 확장자를 분리하기 위해서 사용된다.
+
+- REST API는 메세지의 엔티티 바디의 형식을 나타내기 위해 URIs에 커스터마이징한 파일 확장자를 포함하면 안된다.
+- 대신에 body의 내용을 처리하기 위해, Content-Type 헤더를 통해 커뮤니케이션되는 media type을 이용해야 한다.
+
+example)
+
+- http:\/\/api.college.restapi.org/students/3249234/transcripts/2005/fall.json
+  - 파일 확장자가 붙으면 안된다.
+- http:\/\/api.college.restapi.org/students/3249234/transcripts/2005/fall
+  - Request Header의 Accept라는 항목을 통해 client는 제공받는 형식을 지정할 수 있다.
 
 ### URI Authority의 설계 원칙
 
 #### :green_book: Rule: API에는 일관된 서브 도메인 이름이 사용되어야 한다.
 
+API의 최상위 레벨의 도메인 그리고 첫 번째 서브도메인의 이름은 서비스가 무엇인지 구분할 수 있는 것이어야 한다.
+
+예를 들어 API의 풀 도메인은 서브도메인으로 "api"를 붙여야 한다.
+
+- http:\/\/api.soccer.restapi.org
+
 #### :green_book: Rule: 마찬가지로 개발자 포털에도 일관된 서브 도메인 이름이 사용되어야 한다.
 
+대부분의 REST API는 관련 웹사이트를 가지고 있다.
+
+- 개발자 포털 -> 문서, 포럼, API access key를 제공 등등
+
+마찬가지로 "developer"라는 서브 도메인을 붙여주어야 한다.
+
+- http:\/\/developer.soccer/restapi.org
+
 ### URI Resource Modeling
+
+URI Path와 REST API의 리소스를 모델링하는 것은 비슷하다.
+
+- http:\/\/api.soccer.restapi.org/leagues/seattle/teams/trebuchet
+  - leagues -> seattle -> teams -> trebuchet
+  - 이런식으로 REST API의 경우에도 리소스를 계층적으로 구성한다는 것이 유사
+
+### URI Resource Archetypes
+
+REST API는 4개의 리소스 타입을 가진다. (이건 책의 저자가 정의한 것)
+
+1. **Document**
+   - 객체 인스턴스 또는 데이터베이스의 레코드와 유사한 **단일 개념**
+   - Document의 state는 어떤 값을 나타내는 Filed와 다른 Document로 연결되는 Link가 있다.
+
+2. **Collection**
+   - 서버 관리 자원(Resource)의 **디렉토리** 개념
+   - <u>Resource들을 모아두는 곳</u>이라고 생각하면 된다.
+
+3. **Store**
+   - Collection과 비슷하게 <u>Resource들을 모아두는 디렉토리</u>이다.
+   - Collection과 다른 점은 **Client에 의해 관리**되어진다.
+
+4. **Controller**
+   - **실행 가능한 함수**같은 개념
+   - REST API 주로 이 Controller에 의존하는데, 하나의 Controller가 CRUD 중 하나에 매핑되어 작업을 수행한다.
+
+<img src='./img/restApiDesign1-resource-archetypes.png' />
+
+### URI Path의 설계 원칙
+
+#### :books: Rule: Document 이름으로 단수형 명사가 사용되어야 한다.
+
+http:\/\/api.soccer.restapi.org/leagues/seattle/teams/trebuchet/players/claudio
+
+#### :books: Rule: Collection 이름으로 복수형 명사가 사용되어야 한다.
+
+http:\/\/api.soccer.restapi.org/leagues/seattle/teams/trebuchet/players
+
+#### :books: Rule: Store 이름으로 복수형 명사가 사용되어야 한다.
+
+http:\/\/api.music.restapi.org/artists/mikemassedotcom/playlists
+
+#### :books: Rule: Controller 이름으로 동사 또는 동사 구문이 사용되어야 한다.
+
+http:\/\/api.college.restapi.org/students/morgan/register
+
+http:\/\/api.example.restapi.org/lists/4324/dedupe
+
+#### :books: Rule: 변수형의 Path는 ID 기반의 값으로 대체되어야 한다.
+
+http:\/\/api.soccer.restapi.org/leagues/seattle/teams/trebuchet/players/21 **→ Player ID**
+
+http:\/\/api.soccer.restapi.org/games/3fd65a60-cb8b-11e0-9572-0800200c9a66  **→ Game ID를 UUID형식으로 나타낸 것**
+
+#### :books: Rule: CRUD 함수 이름은 URI에서 사용되면 안된다.
+
+> :exclamation: 여기서 CRUD 함수는 HTTP Method(GET, POST, PUT, DELETE 등)을 의미
+
+- **DELETE** /users/1234 (**O**)
+- **GET** /deleteUser?id=1234 (**X**)
+- **GET** /deleteUser/1234 (**X**)
+- **DELETE** /deleteUser/1234 (**X**)
+- **POST** /users/1234/delete (**X**)
+
+### URI Query의 설계 원칙
+
+#### :books: Rule: URI의 Query 부분은 Collection이나 Store를 필터링 하기 위해 사용되어야 한다.
+
+1. GET /users
+2. GET /users?role=admin
+
+1번의 경우는 모든 user의 정보를 받을 것이다.
+
+2번의 경우에는 user 중 admin 역할을 가진 user의 정보를 받는다 (filtering)
+
+#### :books: Rule: URI의 Query 부분은 Collection이나 Store의 결과를 페이징 하기 위해 사용되어야 한다.
+
+> :exclamation: 페이징 한다는 것? 여러 개의 결과 리스트를 페이지 단위로 나눈다는 의미
+
+- Ex) GET /users?pageSize=25&pageStartIndex=50
+  - pageSize : Response에 리턴 될 데이터(element)의 양을 지정
+  - pageStartIndex : Index의 0으로 시작될 부분을 지정
+  - 위 예제는 user 데이터 중 50번 째부터 25개의 데이터를 받겠다는 의미
