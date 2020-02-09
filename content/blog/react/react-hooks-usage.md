@@ -25,7 +25,7 @@ category: react
   - useLayoutEffect
   - useDebugValue
 
-이 중에서 기본 Hook의 `useState`, `useEffect``에 대해서 정리하고 나머지에 대해서는 나중에 정리하고자 한다.
+이 중에서 기본 Hook의 `useState`, `useEffect`에 대해서 정리하고 나머지에 대해서는 나중에 정리하고자 한다.
 
 ### useState
 
