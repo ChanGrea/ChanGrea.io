@@ -20,7 +20,7 @@ category: javascript
 
 > ES5를 지원하는 브라우저 목록
 
-![](./img/browserList.png)
+![](./img/es5-browserList.png)
 
 `ES5의 주요 특징`은 아래와 같다.
 
