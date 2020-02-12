@@ -16,7 +16,7 @@ category: react
 
 [Atomic Design](https://shop.bradfrost.com/products/atomic-design-ebook) - _Brad Frost_
 
-<img src='./img/book-cover_atomic-design.webp'/>
+<img src='./img/AtomicDesign-book-cover_atomic-design.webp'/>
 
 ## 화학과 UI
 
@@ -36,7 +36,7 @@ Atomic Design을 생각한 저자는 **"화학"**과 UI를 연관시킬 수 있�
 4. [Templates](./#templates)
 5. [Pages](./#pages)
 
-<img src='./img/atomic-design.png' />
+<img src='./img/AtomicDesign-atomic-design.png' />
 
 ### Atoms
 
@@ -44,7 +44,7 @@ Atomic Design을 생각한 저자는 **"화학"**과 UI를 연관시킬 수 있�
 - ex) label, input, button ...
 - 또한 Color, Font, Animation 같은 추상적이거나 눈에 보이지 않는 것들도 포함된다.
 
-<img src='./img/atoms.jpg' />
+<img src='./img/AtomicDesign-atoms.jpg' />
 
 ### Molecules
 
@@ -52,14 +52,14 @@ Atomic Design을 생각한 저자는 **"화학"**과 UI를 연관시킬 수 있�
 - 위에서 언급한 label, input, button 등 Atoms는 따로 사용될 때는 그리 유용하지 않다.
 - Atoms를 결합해서 사용할 때 비교적 의미 있는 요소가 된다.
 
-<img src='./img/molecule.jpg' />
+<img src='./img/AtomicDesign-molecule.jpg' />
 
 ### Organisms
 
 - 여러 개의 **Molecules**로 구성된 것
 - ex) logo, navigation search form, social media channel이 합쳐진 구성
 
-<img src='./img/organism.jpg' />
+<img src='./img/AtomicDesign-organism.jpg' />
 
 ### Templates
 
@@ -67,14 +67,14 @@ Atomic Design을 생각한 저자는 **"화학"**과 UI를 연관시킬 수 있�
 - 여러 개의 **Organisms**로 구성된 것
 - HTML의 Wireframe(뼈대)라고 생각하면 된다.
 
-<img src='./img/template.jpg' />
+<img src='./img/AtomicDesign-template.jpg' />
 
 ### Pages
 
 - **Template**의 인스턴스
 - Template의 Contents 부분이 실제 User가 볼 수 있는 것들로 채워진다.
 
-<img src='./img/page.jpg' />
+<img src='./img/AtomicDesign-page.jpg' />
 
 ## Reference
 

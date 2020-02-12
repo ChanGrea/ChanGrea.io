@@ -108,7 +108,7 @@ render() { ... }
 - 컴포넌트와 그 내부에 있는 컴포넌트들을 재귀적으로 **렌더링**
 - 이후 이 객체의 정보를 바탕으로 **HTML 마크업(Markup)**을 생성하여 **DOM 요소** 안에 주입
 
-<img src='./img/initial-rendering.png' />
+<img src='./img/React-Overview-initial-rendering.png' />
 
 #### :point_right: 조화 과정
 
@@ -116,7 +116,7 @@ render() { ... }
 
 컴포넌트에서 데이터에 변화가 있을 때 뷰가 변형되는 것처럼 보이지만, 사실 새로운 요소로 갈아 끼우기 때문이다.
 
-<img src='./img/DOMtree.png' />
+<img src='./img/React-Overview-DOMtree.png' />
 
 위 그림에서 두 가지 뷰를 최소한의 연산으로 비교한 후, 둘의 차이를 알아내 최소한의 연산으로 DOM 트리를 업데이트한다.
 
@@ -129,7 +129,7 @@ render() { ... }
 
 웹 브라우저는 DOM을 활용하여 객체에 자바스크립트와 CSS를 적용한다. DOM은 트리 형태라서 특정 노드를 찾거나 수정하거나 제거하거나 원하는 곳에 삽입할 수 있다.
 
-<img src='./img/htmlDOM.png' />
+<img src='./img/React-Overview-htmlDOM.png' />
 
 #### :point_right: DOM은 느리다?
 
@@ -153,7 +153,7 @@ React에서 데이터가 변하여 웹 브라우저에 실제 DOM을 업데이�
 2. 이전 Virtual DOM에 있던 내용과 현재 내용 비교
 3. 바뀐 부분만 실제 DOM에 적용
 
-<img src='./img/DOMtree.png' />
+<img src='./img/React-Overview-DOMtree.png' />
 
 #### :point_right: 오해
 
