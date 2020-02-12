@@ -18,7 +18,7 @@ category: react
 
 라이프사이클은 총 세가지, **마운트**, **업데이트**, **언마운트** 카테고리로 나눈다.
 
-<img src='./img/lifecycle.png' />
+<img src='./img/LifeCycle-lifecycle.png' />
 
 ### :point_right: 마운트
 
