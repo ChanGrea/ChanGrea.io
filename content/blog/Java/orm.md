@@ -54,27 +54,45 @@ category: Java
 - ORACLE
 - Postgres
 
-## RDB(Relational DataBase)
+## RDB(Relational Database)
 
+위에 나열한 것들이 대표적인 **RDB**의 DBMS들이다. (**RDBMS** 라고 한다.)
 
+**RDB(Relational Database)**, 관계형 데이터베이스는 <u>키(Key)</u>와 <u>값(Value)</u>의 간단한 관계를 2차원 표(<u>테이블</u>) 형식으로 나타낸 데이터베이스다.
 
+<img src="./img/orm-rdb-table.png"/>	
 
+- 테이블의 행(`Row`)를 `Record`라고도 한다.
+- 각 `Row`는 열(`Column`)에 해당하는 값들로 구성된다.
+- `Table`은 여러 개의 `Record`로 구성된다.
 
+### :banana: RDBMS(Relational Database Management System)
 
+위에서 보았겠지만, 관계형 데이터베이스를 관리하는 소프트웨어이다.
 
-## 영속성(Persistence)
+- MySQL
+- ORACLE
+- Postgres
 
-데이터를 저장하고 프로그램이 종료되더라도 데이터가 사라지지 않는 특성, 이것을 **영속성(Persistence)**이라고 한다.
+RDBMS는 Client가 요청을 보내면 처리해주는 **Client-Server 구조**이다. 그리고 Client가 요청을 보낼 때 쓰는 언어가 **SQL(Structured Query Language)**이다.
 
-이 영속성을 부여하는 방법은 **파일에 저장** 혹은 **데이터베이스에 저장**하는 방법이 있다.
+여기까지가 데이터베이스에 대한 기초적인, 이미 들어봤을 법한 내용들이었다.
 
-### 데이터베이스에 데이터를 저장하는 방법(Java 기준)
+## Java 언어에서는 DBMS를 어떤식으로 활용하는가?
+
+### :banana: 데이터베이스에 데이터를 저장하는 방법(Java 기준)
 
 - JDBC
 - Spring JDBC 
   - ex) JdbcTemplate
 - Persistence Framework
   - ex) JPA, Hibernate, Mybatis 등
+
+## 영속성(Persistence)
+
+데이터를 저장하고 프로그램이 종료되더라도 데이터가 사라지지 않는 특성, 이것을 **영속성(Persistence)**이라고 한다.
+
+이 영속성을 부여하는 방법은 **파일에 저장** 혹은 **데이터베이스에 저장**하는 방법이 있다.
 
 ### Persistence Layer
 
