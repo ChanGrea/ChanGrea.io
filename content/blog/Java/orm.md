@@ -191,17 +191,35 @@ Persistence Framework는 **SQL Mapper**와 **ORM**으로 나뉜다.
   - SQL Query가 아닌 직관적인 코드(메서드)로 데이터 조작
 - **JPA**, **Hibernate**
 
-### :banana: JPA vs Hibernate vs MyBatis (정리중)
-
-#### :strawberry: JPA
-
-#### :strawberry: Hibernate
+### :banana: MyBatis vs Hibernate
 
 #### :strawberry: MyBatis
 
+- 반복적인 JDBC 프로그래밍을 단순화하기 위해 iBatis라는 이름으로 출발
+  - 이후에 아파치 소프트웨어 재단에서 구글 코드(Google Code)로 이사하면서 MyBatis라는 이름으로 바뀜
+- 개발과 유지보수가 쉽도록 소스 코드에 박혀있는 **SQL을 별도의 파일로 분리**
+
+#### :strawberry: Hibernate
+
+- JPA의 실제 구현체
+- HQL(Hibernate Query Language)라는 객체 질의어를 제공
+  - SQL을 몰라도 되기 때문에 개발자의 부담이 줄어든다.
+  - 실행 시에 DBMS에 맞추어 SQL 문을 자동 생성하기 때문에 특정 DBMS에 종속되지 않는다.
+- 데이터베이스의 정규화(normalized)가 잘돼 있어야 한다.
+  - 테이블을 객체와 연결하기 쉽고, 객체를 통해 테이블의 데이터를 다루기가 쉽다.
+- 데이터베이스의 특징에 맞추어 최적화를 할 수 없다.
+  - 데이터베이스 마다 실행 성능을 높이고 데이터 처리를 쉽게 해주는 특별한 기능을 각각 가지고 있다.
+  - 이런 기능을 활용할 수 있도록 전용 SQL을 제공하지만, ORM에서는 SQL을 직접 작성하지 않기 때문에 최적화가 쉽지 않다.
+
 #### :strawberry: 왜 JPA, Hibernate를 쓰는가? MyBatis와는 뭐가 다른가? (면접 질문)
 
+사실 최근 5년간 사용률은 **전세계적으로는 JPA > MyBatis**, **국내에서는 JPA < MyBatis** 이다. 위에서 정리했듯이, ORM(JPA), SQL Mapper(MyBatis)가 더 좋다, 나쁘다를 확언하기가 어렵다.
 
+각각의 장,단점이 있고, JPA의 사용률이 높아지는 이유는 복잡한 데이터를 추출하는 업무보다는 비즈니스 로직에 집중하고, 수정하는 업무가 주이기 때문인 것 같다.
+
+무작정 생산성이 빠르다, SQL을 신경쓰지 않아도 된다 등 장점이 많아서 사용한다기 보다는 "**개발하고 있는 서비스에 어떤 것이 적합한가? 왜 써야만 할까?**"와 같은 사상적인 면에서 고민하고 결정하는 것이 맞는 것 같다.
+
+결론은 둘 다 알아두는 것이 좋다..!
 
 ## Reference
 
