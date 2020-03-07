@@ -38,7 +38,7 @@ category: Java
 
 <img src="./img/orm-dbms.png" />
 
-#### :strawberry:DMBS를 쓰지 않는다면?
+#### :strawberry: DMBS를 쓰지 않는다면?
 
 - 다수의 사람이 데이터를 공유하기 어렵다
   - 위와 같은 경우이다.
@@ -78,36 +78,131 @@ RDBMS는 Client가 요청을 보내면 처리해주는 **Client-Server 구조**�
 
 여기까지가 데이터베이스에 대한 기초적인, 이미 들어봤을 법한 내용들이었다.
 
-## Java 언어에서는 DBMS를 어떤식으로 활용하는가?
+## 그럼 대표적으로 Java 언어에서는?
 
-### :banana: 데이터베이스에 데이터를 저장하는 방법(Java 기준)
+### :banana: JDBC(Java DataBase Connectivity)
 
-- JDBC
-- Spring JDBC 
-  - ex) JdbcTemplate
-- Persistence Framework
-  - ex) JPA, Hibernate, Mybatis 등
+Client가 요청을 보낼 때 **SQL**을 사용한다면, **Java Program과 DBMS 간의 연결, 통신**은 어떻게 해야 할까?
 
-## 영속성(Persistence)
+앞서 정리했듯이, DBMS 종류는 여러가지가 있다. 그러면, 그 DBMS마다 각각의 API를 정의해줘야만 하는걸까?
 
-데이터를 저장하고 프로그램이 종료되더라도 데이터가 사라지지 않는 특성, 이것을 **영속성(Persistence)**이라고 한다.
+다행히, JAVA에서는 데이터베이스와의 통신을 위한 API 인터페이스를 제공하는데, 바로 **JDBC(Java DataBase Connectivity)**다.
 
-이 영속성을 부여하는 방법은 **파일에 저장** 혹은 **데이터베이스에 저장**하는 방법이 있다.
+#### :strawberry: Example
 
-### Persistence Layer
+```java
+Connection conn = DriverManager.getConnection(
+     "jdbc:somejdbcvendor:other data needed by some jdbc vendor",
+     "myLogin",
+     "myPassword" );
+try {
+     /* you use the connection here */
+} finally {
+    //It's important to close the connection when you are done with it
+    try { conn.close(); } catch (Throwable e) { 
+      /* Propagate the original exception instead of this one that you want just logged */ 
+      logger.warn("Could not close JDBC Connection",e); 
+    }
+}
+```
 
-- 데이터에 영속성을 부여해주는 계층
-- 
-
-### Persistence Framework
-
-
+- `DriverManager.getConnection()` 메소드들 가운데 하나를 사용하여 JDBC 연결을 만든다.
+- 인자로 URL과 ID, PW를 전달하게 되는데, 이제 JDBC 드라이버에만 의존하면 된다.
+- URL은 "**jdbc**"로 시작하지만, 그 이후 URL은 vendor(즉 DMBS 종류)에 따라 다르다.
 
 ## ORM(Object Relational Mapping)
 
-### 정의
+### :banana: 지금까지의 내용
+
+지금까지 정리한 내용을 되짚어보면 아래와 같다.
+
+- 사용자가 Database에 데이터를 저장하고 꺼내기 위해서는 DBMS와 통신을 한다.
+- **DBMS와 통신은 C/S 구조로 SQL을 이용한다.**
+- 여러 DBMS가 존재하기에 그것을 통합(?)하기 위해 대표적으로 Java 언어에서는 JDBC를 이용한다.
+
+### :banana: 개발을 함에 있어서의 SQL의 걸림돌
+
+#### :strawberry: SQL까지 신경써야 한다
+
+이 중 두 번째 항목인 <u>SQL을 이용한다</u> 이 말은 즉, 우리는 Backend 언어로 개발을 하면서도 DB를 사용하기 위해서는 SQL까지 신경써야 한다는 이야기다.
+
+매번 기능을 개발할 때마다 그 기능에 사용될 데이터를 가져와야 하고, 그에 맞는 SQL Query를 작성해야 한다. 어떻게 보면, 생산성 면에서 비효율적일 수도 있다.
+
+#### :strawberry: SQL은 인터프리터 언어, Java는 객체지향 언어..
+
+또한 SQL은 인터프리터 언어이다. 이것은 객체지향 프로그래밍, OOP(Object Oriented Programming)에서 작성한 코드에서 객체지향스럽게(?) DB 관련 코드를 작성할 수 없다는 뜻이다.
+
+좀 더 쉽게 말하자면, SQL Query가 개발 코드에 들어가 있고, SQL에 종속적이게 된다. (Database의 변경이 생길 경우 개발 코드를 수정해야 한다)
+
+
+
+이런 걸림돌을 위해 ORM이 등장하게 된다.
+
+### :banana: ORM이란
 
 **ORM**은 객체 지향 프로그래밍에서 객체(Object)와 관계형 데이터베이스의 데이터(Table)을 맵핑시켜주는 개념이다.
 
+#### :strawberry: ORM 종류
+
+- **Flask** - SQLAlchemy
+- **Django** - 내장 ORM을 가진다.
+- **Node.js** - Sequalize
+- **Java** - Hybernate, JPA
+
+좀 더 자세히 보자
+
+#### :strawberry: Persistence (영속성)
+
+데이터를 생성한 프로그램이 종료되더라도 그 데이터는 사라지지 않는 특성을 **영속성(Persistence)**라고 한다.
+
+흔히 말하는 `MVC(Model-View-Controller)` 모델에서 **4개의 계층**으로 구성된다. (위에서부터 Top-down으로 작성)
+
+- Presentation Layer (UI Layer)
+  - 사용자에게 보여지는 화면으로 Event-Driven 방식으로 사용자의 요청을 받는다.
+- Control Layer (Application Layer or Service Layer)
+  - Presentation에서 받은 요청을 Business Layer에 전달하는 부분이다.
+  - 비즈니스 로직과 UI(Presentation)을 분리하기 위한 계층
+  - 사용자의 요청(request)에 해당하는 비즈니스 로직을 결정(controller)하고, 적절한 응답(response)을 사용자에 전달하는 역할을 한다.
+- Business Layer (Domain Layer)
+  - 핵심적인 로직이 구현되며, Persistence Layer에 데이터를 요청하여 받아서 로직을 수행한다.
+- <span style="color: red;">Persistence Layer</span>
+  - 데이터베이스에서 데이터를 빼내어(**Read**) 객체화하거나, 데이터베이스에 데이터를 저장(**Create**), 수정(**Update**), 삭제(**Delete**)하는 역할
+
+앞서 언급한 `JDBC`로 직접 Persistence Layer를 구현할 수 있지만, **Persistence Framework**를 많이 이용하는 편이다.
+
+#### :strawberry: Persistence Framework
+
+JDBC 프로그래밍의 복잡함이나 번거로움 없이 간단한 작업만으로 데이터베이스와 연동되는 시스템을 빠르게 개발한다.
+
+Persistence Framework는 **SQL Mapper**와 **ORM**으로 나뉜다.
+
+##### :point_right: SQLMapper
+
+- SQL :arrow_left: SQLMapper :arrow_right: Object 필드
+- SQL 문장으로 직접 데이터베이스 데이터를 다룬다.
+- SQL을 직접 작성해줘야 한다.
+- **Mybatis**, **JdbcTemplates**(spring)
+
+##### :point_right: ORM
+
+- 데이터베이스 데이터 :arrow_left: ORM :arrow_right: Object 필드
+- 객체를 통해 간접적으로 데이터베이스 데이터를 다룬다.
+- 객체와 관계형 데이터베이스의 데이터를 자동으로 맵핑 시켜준다.
+  - SQL Query가 아닌 직관적인 코드(메서드)로 데이터 조작
+- **JPA**, **Hibernate**
+
+### :banana: JPA vs Hibernate vs MyBatis (정리중)
+
+#### :strawberry: JPA
+
+#### :strawberry: Hibernate
+
+#### :strawberry: MyBatis
+
+#### :strawberry: 왜 JPA, Hibernate를 쓰는가? MyBatis와는 뭐가 다른가? (면접 질문)
 
 
+
+## Reference
+
+- [https://gmlwjd9405.github.io/2018/12/25/difference-jdbc-jpa-mybatis.html](https://gmlwjd9405.github.io/2018/12/25/difference-jdbc-jpa-mybatis.html)
