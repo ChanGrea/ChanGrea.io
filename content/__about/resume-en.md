@@ -24,6 +24,30 @@ One more step for a better tomorrow than yesterday...
 
 <br/>
 
+# :wrench: Skill Set (작성중)
+
+## Frontend
+
+### HTML / CSS / Javascript
+
+## Backend
+
+### Java
+
+### Go
+
+## Infra
+
+## Tool
+
+### Git
+
+### Intellij
+
+### VSCode
+
+<br/>
+
 # 💼 Work Experiences
 
 ## KT
