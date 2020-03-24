@@ -208,6 +208,132 @@ public class UserServiceImpl implements UserService {
 
 ## 의존성 주입
 
+### 설정자 기반 의존성 주입 방식 (*세터 인젝션*)
 
+#### UserServiceImpl에 설정자 메서드 구현
+
+```java
+public class UserServiceImpl implements UserService {
+  private UserRepository userRepository;
+  private PasswordEncoder passwordEncoder;
+  
+  // 기본 생성자(생략 가능)
+  public UserServiceImpl() {}
+  
+  public void setUserRepository(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+  
+  public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+    this.passwordEncoder = passwordEncoder;
+  }
+  // 생략
+}
+```
+
+#### 세터 인젝션을 <u>자바</u> 기반 설정 방식으로 표현한 예
+
+```java
+@Bean
+UserService userService() {
+  UserServiceImpl userService = new UserServiceImpl();
+  userService.setUserRepository(userRepository());
+  userService.setPasswordEncoder(passwordEncoder());
+  return userService;
+}
+```
+
+- 프로그램에서 인스턴스를 직접 생성하는 코드처럼 보이기 때문에 빈을 정의한 설정인지 체감이 되지 않음
+
+#### 세터 인젝션을 <u>XML</u> 기반 설정 방식으로 표현한 예
+
+```xml
+<bean id="userService" class="com.example.demo.UserServiceImpl">
+	<property name="userRepository" ref="userRepository" />
+  <property name="passwordEncoder" ref="passwordEncoder" />
+</bean>
+```
+
+- name에 주입할 대상의 이름을 지정
+- 이름이 'xyz'라면, 설정자(setter)와 접근자(getter) 메서드는 setXyz, getXyz가 된다.
+
+#### 세터 인젝션을 <u>애너테이션</u> 기반 설정 방식으로 표현한 예
+
+```java
+@Component
+public class UserServiceImpl implements UserService {
+  private UserRepository userRepository;
+  private PasswordEncoder passwordEncoder;
+  
+  @Autowired
+  public void setUserRepository(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+  
+  @Autowired
+  public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+    this.passwordEncoder = passwordEncoder;
+  }
+  
+  // 생략
+}
+```
+
+- 설정자 메서드(Setter)에 @Autowired만 달아주면 된다.
+
+### 생성자 기반 의존성 주입 방식 (*컨스트럭션 인젝션*)
+
+- 생성자의 인수를 사용해 의존성 주입
+
+#### 컨스트럭터 인젝션을 XML 기반 설정 방식으로 표현한 예(인덱스 사용)
+
+```xml
+<bean id="userSerivce" class="com.example.demo.UserServiceImpl">
+	<constructor-arg index="0" ref="userRepository" />
+  <constructor-arg index="1" ref="passwordEncoder" />
+</bean>
+
+<!-- 아래와 같이 name 속성으로 네이밍 가능 -->
+<bean id="userSerivce" class="com.example.demo.UserServiceImpl">
+	<constructor-arg name="userRepository" ref="userRepository" />
+  <constructor-arg name="passwordEncoder" ref="passwordEncoder" />
+</bean>
+```
+
+- index를 사용하여 가독성 향상, 실수 방지
+- name 속성을 이용하는 경우에는 컴파일 과정에서 없어지기 때문에 javac 명령과 함께 디버깅 정보를 전달할 수 있는 -g 옵션을 사용해야 한다. (JDK8 이후부터 매개변수의 메타 정보를 생성할 수 있는 -parameters 옵션 사용)
+  - 대신 아래와 같이 애너테이션 기반 설정으로 대체 가능
+
+#### 컨스트럭터 인젝션을 애너테이션 기반 설정으로 표현한 예
+
+```java
+@ConstructorProperties({"userRepository", "passwordEncoder"})
+public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  //생략
+}
+```
+
+- 필드를 final로 선언해서 생성 후에 변경되지 않게 만든다.
+
+### 필드 기반 의존성 주입 방식 (*필드 인젝션*)
+
+- DI 컨테이너의 힘을 빌려 의존성 주입
+- 필드에 @Autowired 애너테이션을 달아준다.
+- Getter나 Setter를 굳이 만들 필요가 없어서 간결해 보인다.
+
+```java
+@Component
+public class UserServiceImpl implements UserService {
+  @Autowired
+  UserRepository userRepository;
+  
+  @Autowired
+  PasswordEncoder passwordEncoder;
+  
+  // 생략
+}
+```
+
+- :exclamation: DI 컨테이너 없이 사용되는 독립형 라이브러리는 필드 인젝션을 사용하지 않는다.
 
 ## 오토와이어링
