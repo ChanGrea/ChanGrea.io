@@ -104,7 +104,7 @@ DI 컨테이너에 등록하는 컴포넌트를 **빈**이라고 하고, 이 빈
 
 ### 1. 자바 기반 설정 방식
 
-@Configuration, @Bean 어노테이션 사용
+`@Configuration`, `@Bean` 어노테이션 사용
 
 ```java
 import ...;
@@ -318,7 +318,7 @@ public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEn
 ### 필드 기반 의존성 주입 방식 (*필드 인젝션*)
 
 - DI 컨테이너의 힘을 빌려 의존성 주입
-- 필드에 @Autowired 애너테이션을 달아준다.
+- 필드에 `@Autowired` 애너테이션을 달아준다.
 - Getter나 Setter를 굳이 만들 필요가 없어서 간결해 보인다.
 
 ```java
@@ -337,3 +337,62 @@ public class UserServiceImpl implements UserService {
 - :exclamation: DI 컨테이너 없이 사용되는 독립형 라이브러리는 필드 인젝션을 사용하지 않는다.
 
 ## 오토와이어링
+
+### 타입으로 오토와이어링하기
+
+- 지금까지 했던 @Autowired 애너테이션은 타입으로 오토와이어링 하는 방식
+- 기본적으로 의존성 주입이 반드시 **성공**한다고 가정
+  - 찾지 못하면 NoSuchBeanDefinitionException 발생
+  - 만약 이런 필수 조건을 완화하고 싶다면 @Autowired 애너테이션에 **required 속성에 false**를 설정 ( **@Autowired(required = false)** )
+  - Java SE 8부터 java.util.Optional 사용 가능
+
+```java
+@Autowired
+Optional<PasswordEncoder> passwordEncoder;
+
+public void createUser(User user, String rawPassword) {
+  String encodedPassword = passwordEncoder.map(x -> x.encode(rawPassword))
+    												.orElse(rawPassword);
+}
+```
+
+#### *만약 같은 타입의 빈이 여러 개 정의된 경우라면?*
+
+- `@Qualifier` 애너테이션을 추가하면서 빈 이름을 지정하면 같은 타입의 빈 중에서 원하는 빈만 선택할 수 있다.
+
+```java
+// 두 개의 PasswordEncoder를 자바 기반 설정 방식으로 정의한 예
+@Configuration
+@ComponentScan
+public class AppConfig {
+  @Bean
+  PasswordEncoder sha256PasswordEncoder() {
+    return new Sha256PasswordEncoder();
+  }
+  
+  @Bean
+  PasswordEncoder bcryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+  
+  // 생략
+}
+```
+
+```java
+// @Qualifier를 사용해 빈 이름 명시
+@Component
+public class UserServiceImpl implements UserService {
+  @Autowired
+  @Qualifier("sha256PasswordEncoder")
+  PasswordEncoder passwordEncoder;
+  // 생략
+}
+```
+
+@Qualifier 대신에 Bean에 **@Primary 애너테이션**을 붙여서 기본으로 선택하게 할 수도 있다.
+
+### 이름으로 오토와이어링하기
+
+- `@Resource` 애너테이션 활용
+
