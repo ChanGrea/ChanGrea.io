@@ -396,3 +396,43 @@ public class UserServiceImpl implements UserService {
 
 - `@Resource` 애너테이션 활용
 
+#### @Resource 애너테이션을 활용해 필드 인젝션을 하는 예
+
+```java
+@Component
+public class UserServiceImpl implements UserService {
+  @Resource(name = "sha256PasswordEncoder")
+  PasswordEncoder passwordEncoder;
+  // 생략
+}
+```
+
+#### name 속성 생략
+
+- name 속성은 생략이 가능하다.
+- 이런 경우에는 필드 이름 또는 프로퍼티 이름과 같은 빈이 선택된다.
+
+```java
+@Component
+public class UserServiceImpl implements UserService {
+  @Resource
+  PasswordEncoder sha256PasswordEncoder;
+  // 생략
+}
+```
+
+```java
+@Component
+public class UserServiceImpl implements UserService {
+	private PasswordEncoder passwordEncoder;
+  
+  @Resource
+  public void setSha256PasswordEncoder(PasswordEncoder passwordEncoder) {
+    this.passwordEncoder = passwordEncoder;
+  }
+  
+  // 생략
+}
+```
+
+- 위의 어느 경우에 해당되지 않으면 타입으로 오토와이어링 시도
