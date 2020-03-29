@@ -271,3 +271,165 @@ public class MethodLoggingAspect {
 - 위 코드에서는 @Before, @AfterReturning, @AfterThrowing의 역할을 하고 있다.
 - finally 부분도 있다면, @After의 역할도 할 수 있을 것 같다.
 - `Around` 하나로 모든 어드바이스를 구현 가능하다.
+
+## 포인트컷 표현식
+
+### 메서드명으로 조인 포인트 선택
+
+#### execution 지시자의 표현 방식
+
+<img src="./img/springcore2-pointcut.png" />
+
+#### Example
+
+- **execution(* com.example.user.UserService.*(..))**
+  - com.example.user.UserService 클래스에서 임의의 메서드를 대상으로 한다.
+- **execution(* com.example.user.UserService.find*(..))**
+  - com.example.user.UserService 클래스에서 이름이 find로 시작하는 메서드를 대상으로 한다.
+- **execution(String com.example.user.UserService.*(..))**
+  - com.example.user.UserService 클래스에서 반환값의 타입이 String인 메서드를 대상으로 한다.
+- **execution(* com.example.user.UserService.*(String, ..))**
+  - com.example.user.UserService 클래스에서 첫 번째 매개변수의 타입이 String인 메서드를 대상으로 한다.
+
+#### 와일드카드
+
+| 와일드카드 | 설명                                                         |
+| ---------- | ------------------------------------------------------------ |
+| *          | 기본적으로 임의의 문자열 의미, 패키지를 표현할 때는 임의의 패키지 **1개 계층** 의미, 메서드의 매개변수를 표현할 때는 **임의의 인수 1개** 의미 |
+| ..         | 패키지를 표현할 때 임의의 패키지 **0개 이상** 계층 의미, 메서드의 매개변수를 표현할 때는 **임의 인수 0개 이상** 의미 |
+| +          | 클래스명 뒤에 붙여 쓰며, 해당 클래스와 해당 클래스의 서브클래스, 혹은 구현 클래스 모두 의미 |
+
+### 타입으로 조인 포인트 선택
+
+- `within` 지시자 사용
+- 클래스명의 패턴만 사용
+
+#### Example
+
+- within(com.example.service..*)
+  - 임의의 클래스에 속한 임의의 메서드를 대상으로 한다. 단 임의의 클래스는 service 패키지나 이 패키지의 서브 패키지에 속한다.
+- within(com.example.user.UserServiceImpl)
+  - UserServiceImpl 클래스의 메서드를 대사응로 한다. 단 UserServiceImpl 클래스는 com.example.user 패키지에 속한다.
+- within(com.example.password.PasswordEncoder+)
+  - PasswordEncoder 인터페이스를 구현한 클래스의 메서드를 대상으로 한다.
+
+### 그 밖의 기타 방법으로 조인 포인트 선택
+
+#### Example
+
+- bean(*Service)
+  - DI 컨테이너에 관리되는 빈 가운데 이름이 'Service'로 끝나는 빈의 메서드를 대상으로 한다.
+- @annotation(com.example.annotation.TraceLog)
+  - @TraceLog 애너테이션(com.example.annotation.TraceLog)이 붙은 메서드를 대상으로 한다.
+- @within(com.example.annotation.TraceLog)
+  - @annotation과 동일
+
+### 네임드 포인트컷 활용
+
+- 포인트컷에 이름을 붙여두면 나중에 그 이름으로 포인트컷 재사용 가능
+- `@Pointcut`애너테이션으로 정의
+
+#### 네임드 포인트컷 정의
+
+```java
+@Component
+@Aspect
+public class NamedPointCuts {
+  @Pointcut("within(com.example.web..*)")
+  public void inWebLayer() {}
+  
+  @Pointcut("within(com.example.domain..*)")
+  public void inDomainLayer() {}
+  
+  @Pointcut("execution(public * *(..))")
+  public void anyPublicOperation() {}
+}
+```
+
+#### 네임드 포인트컷 활용
+
+```java
+@Aspect
+@Component
+public class MethodLoggingAspect {
+  @Around("inDomainLayer()")
+  public Object log(ProceedingJoinPoint jp) throws Throwable {
+    // 생략
+  }
+}
+```
+
+## 스프링 프로젝트에서 활용되는 AOP 기능
+
+### 트랜잭션 관리
+
+- `@Transactional` 애너테이션 (org.springframework.transaction.annotation.Transactional)
+- 해당 메서드가 정상적으로 종료한 것이 확인되면 트랜잭션 **commit**
+- 실패해서 예외(exception)이 발생한 것을 감지하면 트랜젝션 **rollback**
+
+```java
+@Transactional
+public Reservation reserve(Reservation reservation) {
+	// 예약 처리
+}
+```
+
+
+
+### 인가
+
+- 스프링 시큐리티에서 제공하는 인가 기능을 AOP 형태로 적용
+- `@PreAuthorize` 애너테이션 (org.springframework.security.access.prepost.PreAuthorize)
+
+```java
+@PreAuthorize("hasRole('ADMIN')")
+public User create(User user) {
+  // 사용자 등록 처리(ADMIN 역할을 가진 사용자만 실행할 수 있다)
+}
+```
+
+
+
+### 캐싱
+
+- `@Cacheable` 애너테이션 (org.springframework.cache.annotation.Cacheable)
+- 메서드의 매개변수 등을 Key로 사용하여 실행 결과를 캐시로 관리
+
+```java
+@Cacheable("user")
+public User findOne(String email) {
+  // 사용자 취득
+}
+```
+
+
+
+### 비동기 처리
+
+- `@Async` 애너테이션 (org.springframework.scheduling.annotation.Async)
+- 반환값으로 `CompletableFuture` 타입 or `DeferredResult` 타입
+- 스레드 관리는 스프링 프레임워크가 처리
+
+```java
+@Async
+public CompletableFuture<Result> calc() {
+  Result result = doSomething();		//오랜 시간이 소요되는 작업
+  return CompletableFuture.completedFuture(result);
+}
+```
+
+
+
+### 재처리
+
+- **스프링 Retry**라는 프로젝트 활용
+- `@Retryable` 애너테이션 (org.springframework.retry.annotation.Retryable)
+- 원하는 조건을 만족할 때까지 재처리
+
+```java
+@Retryable(maxAttempts = 3)
+public String callWebApi() {
+  // 웹 API 호출
+}
+```
+
