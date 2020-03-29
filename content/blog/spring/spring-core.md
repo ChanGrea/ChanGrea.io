@@ -1,5 +1,5 @@
 ---
-title: Spring Core (DI와 AOP)
+title: Spring Core (DI)
 date: 2020-03-23 21:03:07
 category: spring
 ---
