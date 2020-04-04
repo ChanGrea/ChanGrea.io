@@ -95,7 +95,86 @@ class Member {
 
 ## 프런트 컨트롤러 아키텍쳐
 
+<img src='./img/spring-mvc-frontArchitecture.png' />
+
 - org.springframework.web.servlet.DispatcherServlet 클래스(서블릿)로 구현
-- 프런트 컨트롤러의 처리 내용 대부분이 인터페이스를 통해 실행
-  - 인터페이스를 통해 프레임워크의 기능을 확장할 수 있는 스프링MVC의 특징
+- 프런트 컨트롤러의 처리 내용 대부분이 **인터페이스**를 통해 실행
+  - 인터페이스를 통해 **프레임워크의 기능을 확장**할 수 있는 스프링MVC의 특징
+
+### DispatcherServlet
+
+- 프런트 컨트롤러와 연동되는 진입점 역할
+- 기본적인 처리 흐름을 제어하는 사령탑 역할
+
+| 인터페이스명                          | 역할                                                         |
+| ------------------------------------- | ------------------------------------------------------------ |
+| HandlerExceptionResolver              | 예외 처리를 하기 위한 인터페이스                             |
+| LocaleResolver, LocaleContextResolver | 클라이언트의 Locale 정보를 확인하기 위한 인터페이스          |
+| ThemeResolver                         | 클라이언트의 테마(UI 스타일)를 결정하기 위한 인터페이스      |
+| FlashMapManager                       | FlashMap은 PRG(Post Redirect Get) 패턴의 Redirect와 Get 사이에서 모델을 공유하기 위한 Map 객체이다. |
+| RequestToViewNameTranslator           | 핸들러가 뷰 이름과 뷰를 반환하지 않은 경우에 적용되는 뷰 이름을 해결하기 위한 인터페이스 |
+| HandlerInterceptor                    | 핸들러 실행 전후에 하는 공통 처리를 구현하기 위한 인터페이스 |
+| MultipartResolver                     | 멀티파트 요청을 처리하기 위한 인터페이스                     |
+
+### Handler
+
+- 프레임워크 관점에서는 '**핸들러**'라고 부르지만, 개발자가 작성하는 클래스의 관점에서는 '**컨트롤러**'라고 한다.
+
+#### 구현 방법
+
+1. @Controller (org.springframework.stereotype.Controller), @RequestMapping 이용
+2. ~~org.springframework.web.servlet.mvc.Controller 인터페이스 구현, handleRequest 메서드 구현~~ (deprecated)
+
+1번 방법에 대해서만 정리한다.
+
+```java
+@Controller
+public class WelcomeController {
+  
+  @RequestMapping("/")
+  public String home(Model model) {
+    modle.addAttribute("now", new Date());
+    return "home";
+  }
+}
+```
+
+### HandlerMapping
+
+- 요청에 대응할 핸들러를 선택하는 역할
+- 다양한 종류의 구현 클래스가 있지만, 최근에는 `RequestMappingHandlerMapping` 클래스를 사용
+  - **@RequestMapping**이 붙은 메서드(핸들러)를 바탕으로 선택
+
+### HandlerAdapter
+
+- 핸들러 메서드를 호출하는 역할
+- RequestMappingHandlerMapping 클래스에 의해 선택된 핸들러 메서드를 호출할 때는 `RequestMappingHandlerAdapter` 클래스를 사용
+  - 핸들러 메서드에 매개변수 전달
+  - 처리 결과를 리턴
+  - 요청받은 데이터를 자바 객체로 변환
+  - Bean Validation
+- 기본적인 동작 방식을 변경 또는 지원되지 않는 타입을 지원하기 위해서 메서드 시그니처를 유연하게 정의할 수 있도록 두 가지 인터페이스를 제공
+
+| 인터페이스명                    | 역할                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| HandlerMethodArgumentResolver   | 핸들러 메서드 매개변수에 전달하는 값을 다루기 위한 인터페이스 |
+| HnadlerMethodReturnValueHandler | 핸들러 메서드에서 반환된 값을 처리하기 위한 인터페이스       |
+
+### ViewResolver
+
+- 핸들러에서 반환한 뷰 이름을 보고, 이후에 사용할 View 인터페이스의 구현 클래스를 선택
+
+| 클래스명                     | 설명                                                      |
+| ---------------------------- | --------------------------------------------------------- |
+| InternalResourceViewResolver | 뷰가 JSP일 때 사용, 기본적인 ViewResolver                 |
+| BeanNameViewResolver         | DI 컨테이너에 등록된 빈의 형태로 뷰 객체를 가져올 때 사용 |
+
+### View
+
+- 클라이언트에 반환하는 응답 데이터를 생성하는 역할
+
+| 클래스명             | 설명                                                   |
+| -------------------- | ------------------------------------------------------ |
+| InternalResourceView | 템플릿 엔진으로 JSP를 이용할 때 사용하는 클래스        |
+| JstlView             | 템플릿 엔진으로 JSP + JSTL을 이용할 때 사용하는 클래스 |
 
