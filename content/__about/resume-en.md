@@ -12,7 +12,7 @@ lang: 'en'
 I'm a developer trying to be the best at anything.<br/>
 One more step for a better tomorrow than yesterday...
 
-`#Javascript` `#React.js` `#Java` and more..
+`#Javascript` `#React.js` `#Java` `#Spring` `#JPA` and more..
 
 ---
 
@@ -28,23 +28,39 @@ One more step for a better tomorrow than yesterday...
 
 ## Frontend
 
-### HTML / CSS / Javascript
+- HTML / CSS / Javascript
+  - ES6, ES5
+- React.js
+  - Webpack
+- Vue.js
+- Angular.js
+  - Gulp
+  - Bower
 
 ## Backend
 
-### Java
-
-### Go
+- Java
+  - Spring
+  - Spring MVC
+  - Spring Security
+  - RESTful API
+  - JPA
+  - MyBatis
+- C++
+- Go
 
 ## Infra
 
+- Docker
+- Kong (API Gateway)
+
 ## Tool
 
-### Git
+### # GitKraken
 
-### Intellij
+### # IntelliJ IDEA
 
-### VSCode
+### # VSCode
 
 <br/>
 
