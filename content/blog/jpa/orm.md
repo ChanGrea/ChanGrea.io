@@ -1,7 +1,7 @@
 ---
 title: ORM(Object Relational Mapping)
 date: 2020-03-03 22:03:66
-category: Java
+category: jpa
 ---
 
 ## Intro
