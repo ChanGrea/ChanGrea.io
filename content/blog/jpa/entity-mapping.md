@@ -176,3 +176,152 @@ ALTER TABLE MEMBER
 ```
 
 이런 기능들은 단지 DDL을 자동 생성할 때만 사용되고 JPA의 실행 로직에는 영향을 주지 않는다.
+
+## 기본 키(Primary Key) 매핑
+
+### 기본 키 직접 할당 전략
+
+기본 키를 직접 할당하려면 다음 코드와 같이 @Id로 매핑
+
+```java
+@Id
+@Column(name = "id")
+private String id
+```
+
+@id로 적용 가능한 타입은 아래와 같다.
+
+- 자바 기본형
+- 자바 래퍼(Wrapper) 형
+- String
+- java.util.Date
+- java.sql.Date
+- java.math.BigDecimal
+- java.math.BigInteger
+
+### IDENTITY 전략
+
+기본 키 새성을 데이터베이스에 위임하는 전략으로, 주로 MySQL, PostgreSQL, SQL Server, DB2에서 사용
+
+`@GeneratedValue`의 strategy 속성 값을 GenerationType.IDENTITY로 지정
+
+```java
+@Entity
+public class Board {
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  ...
+}
+```
+
+> :exclamation: 참고로 이 전략은 트랜잭션을 지원하는 쓰기 지연이 동작하지 않는다. (데이터베이스에 데이터를 INSERT한 후에 기본 키 값을 조회 할 수 있다.)
+
+### SEQUENCE 전략
+
+데이터베이스의 시퀀스는 유일한 값을 순서대로 생성하는 특별한 데이터베이스 오브젝트다.
+
+SEQUENCE 전략은 이 시퀀스를 사용해서 기본 키를 생성한다. 시퀀스를 지원하는 오라클, PostgreSQL, DB2, H2 데이터베이스에서 사용할 수 있다.
+
+> :exclamation: 이 전략은 먼저 시퀀스를 생성해야 한다.
+
+```sql
+CREATE TABLE BOARD {
+	ID BIGINT NOT NULL PRIMARY KEY,
+	DATA VARCHAR(255)
+}
+
+// 시퀀스 생성
+CREATE SEQUENCE BOARD_SEQ START WITH 1 INCREMENT BY 1;
+```
+
+```java
+@Entity
+@SequenceGenerator (
+	name = "BOARD_SEQ_GENERATOR",
+  sequenceName = "BOARD_SEQ", // 매핑할 데이터베이스 시퀀스 이름
+  initialValue = 1, allocationSize = 1)
+public class Board {
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                 generator = "BOARD_SEQ_GENERATOR")
+  private Long id;
+  ...
+}
+```
+
+SEQUENCE 전략의 내부 동작 방식은 먼저 데이터베이스의 시퀀스를 사용해서 식별자를 조회한다. 그리고 조회한 식별자를 엔티티에 할당한 후에 엔티티를 영속성 컨텍스트에 저장한다.
+
+이후 트랜잭션을 커밋해서 플러시가 일어나면 엔티티를 데이터베이스에 저장한다.
+
+#### @SequenceGenerator
+
+| 속성            | 기능                                                         | 기본값             |
+| --------------- | ------------------------------------------------------------ | ------------------ |
+| name            | 식별자 생성기 이름                                           | 필수               |
+| sequenceName    | 데이터베이스에 등록되어 있는 시퀀스 이름                     | hibernate_sequence |
+| initialValue    | DDL 생성 시에만 사용됨, 시퀀스 DDL을 생성할 때 처음 시작하는 수를 지정한다. | 1                  |
+| allocationSize  | 시퀀스 한 번 호출에 증가하는 수(성능 최적화에 사용)          | 50                 |
+| catalog, schema | 데이터베이스 catalog, schema 이름                            |                    |
+
+### TABLE 전략
+
+키 생성 전용 테이블을 하나 만들고 여기에 이름과 값으로 사용할 컬럼을 만들어 데이터베이스 시퀀스를 흉내내는 전략이다.
+
+```sql
+create table MY_SEQUENCES (
+	sequence_name varchar(255) not null,
+  next_val bigint,
+  primary key ( sequence_name )
+)
+```
+
+```java
+@Entity
+@TableGenerator(
+	name = "BOARD_SEQ_GENERATOR",
+	table = "MY_SEQUENCES",
+	pkColumnValue = "BOARD_SEQ", allocationSize = 1)
+public class Board {
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE,
+                 generator = "BOARD_SEQ_GENERATOR")
+  private Long id;
+  ...
+}
+```
+
+#### @TableGenerator
+
+| 속성                   | 기능                                                  | 기본값              |
+| ---------------------- | ----------------------------------------------------- | ------------------- |
+| name                   | 식별자 생성기 이름                                    | 필수                |
+| table                  | 키생성 테이블명                                       | hibernate_sequences |
+| pkColumnName           | 시퀀스 컬럼명                                         | sequence_name       |
+| valueColumnName        | 시퀀스 값 컬럼명                                      | next_val            |
+| pkColumnValue          | 키로 사용할 값 이름                                   | 엔티티 이름         |
+| initialValue           | 초기 값, 마지막으로 생성된 값이 기준이다.             | 0                   |
+| allocationSize         | 시퀀스 한 번 호출에 증가하는 수(성능 최적화에 사용됨) | 50                  |
+| catalog, schema        | 데이터베이스 catalog, schema 이름                     |                     |
+| uniqueConstraints(DDL) | 유니크 제약 조건을 지정할 수 있다.                    |                     |
+
+### AUTO 전략
+
+AUTO는 선택한 데이터베이스 방언에 따라 IDENTITY, SEQUENCE, TABLE 전략 중 하나를 자동으로 선택
+
+예를들어, 오라클을 선택하면 SEQUENCE, MySQL을 선택하면 IDENTITY를 사용
+
+```java
+@Entity
+public class Board {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  ...
+}
+```
+
+> @GeneratedValue.strategy의 기본값은 AUTO이다. 따라서 위의 strategy 속성은 생략해도 된다.
