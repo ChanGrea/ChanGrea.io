@@ -1,7 +1,7 @@
 ---
 title: JPA (Java Persistence API) 개요
 date: 2020-03-19 18:03:43
-category: java
+category: jpa
 ---
 
 ## Intro

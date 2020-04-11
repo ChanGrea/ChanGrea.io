@@ -1,7 +1,7 @@
 ---
 title: JPA 영속성에 대해
 date: 2020-04-07 23:04:90
-category: java
+category: jpa
 
 ---
 
