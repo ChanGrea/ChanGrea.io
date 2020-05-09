@@ -123,3 +123,28 @@ BEM은 Front-end 개발에서 **재사용이 가능한 컴포넌트와 코드**�
 }
 ```
 
+- 위 예제에서 `button`은 **Block**에 해당한다.
+- `success`,  `danger`는 state가 있고, 이것은 **Modifier**에 해당한다.
+
+
+
+### Naming Rule
+
+#### Block
+
+- 문자, 숫자, 하이픈(-)을 포함한 단어
+- 네임스페이스를 대표할만한 단어로 짓는다.
+- `.block`
+
+#### Element
+
+- 문자, 숫자, 하이픈(-), 언더바(_)를 포함한 단어
+- **Block** 이름에 **언더바(_) 2개**를 붙이고 **Element**의 이름을 붙인다.
+- `.block__elem`
+
+#### Modifier
+
+- 문자, 숫자, 하이픈(-), 언더바(_)를 포함한 단어
+- **Block** 또는 **Element** 이름의 **2개의 하이픈(-)**을 붙인다.
+- `.block--mod `, `.block__elem--mod `,  `.block--color-black `,  `.block--color-red`
+
