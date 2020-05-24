@@ -1,5 +1,5 @@
 ---
-title: Spring Security Authentication(인증)
+title: Spring Security Authentication(인증) - Form, success, failure
 date: 2020-05-23 13:06:10
 category: spring
 ---
@@ -155,5 +155,80 @@ protected void configure(HttpSecurity http) throws Exception {
 ```
 
 - permitAll 메서드를 호출해서 모든 이용자가 로그인 폼에 접근할 수 있게 만든다.
-  - 이렇게 하지 않으면, 인증 오류가 발생해서 리다이렉트 루프(redirect loop)가 발생
+  - 이렇게 하지 않으면, 인증 오류가 발생해서 **리다이렉트 루프(redirect loop)**가 발생
 
+
+
+### 인증이 성공했을 때의 응답
+
+> AuthenticationSuccessHandler의 구현 클래스
+
+| 클래스명                                            | 설명                                                         |
+| --------------------------------------------------- | ------------------------------------------------------------ |
+| SavedRequestAware<br />AuthenticationSuccessHandler | 인증 전에 접근을 시도한 URL로 리다이렉트한다.(기본적으로 사용되는 구현 클래스) |
+| SimpleUrl<br />AuthenticationSuccessHandler         | 생성자에 지정한 URL(defaultTargetUrl)로 리다이렉트나 포워드한다. |
+
+
+
+#### 기본 동작
+
+- 인증 전에 접근 시도한 요청을 HTTP 세션에 저장해 뒀다가 인증 성공 후에 복원해서 리다이렉트
+- 경로에 접근권한이 있으면 페이지 표시, 없으면 인증 오류 발생
+- 인증 처리 성공 후에 **루트 경로("/")**로 이동
+
+
+
+#### 기본 동작 방식의 커스터마이징
+
+- 인증 성공했을 때 이동할 기본 경로를 **'/menu'**로 변경
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+  // 생략
+  http.formLogin()
+    .defaultSuccessUrl("/menu")
+    .permitAll();
+}
+```
+
+
+
+### 인증이 실패했을 때의 응답
+
+> AuthenticationFailureHandler의 구현 클래스
+
+| 클래스명                                           | 설명                                                         |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| SimpleUrl<br />AuthenticationFailureHandler        | 생성자에 지정한 URL(defaultFailureUrl)로 리다이렉트나 포워드한다.<br />(기본적으로 사용되는 구현 클래스) |
+| ExceptionMapping<br />AuthenticationFailureHandler | **인증 예외나 이동 대상의 URL을 매핑**한다.<br />스프링 시큐리티는 오류의 원인마다 발생하는 예외 클래스가 바뀌기 때문에 이 구현 클래스를 사용하면 오류의 종류에 따라 이동 대상을 바꿀 수 있다. |
+| Delegating<br />AuthenticationFailureHandler       | 인증 예외와 AuthenticationFailureHandler를 매핑할 수 있는 구현 클래스<br />ExceptionMappingAuthenticationFailureHandler와 비슷하지만 인증 예외마다 AuthenticationFailureHandler를 지정할 수 있기 때문에 더 유연한 동작을 지원할 수 있다. |
+
+
+
+#### 기본 동작 방식
+
+- 로그인 폼을 표시하는 경로에 **error**라는 쿼리 파라미터가 붙은 URL로 리다이렉트
+  - '/login' :arrow_right: '/login?error'
+
+
+
+#### 기본 동작 방식의 커스터마이징
+
+- '/loginf=Failure'로 변경
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+  // 생략
+  http.formLogin()
+    .failureUrl("/loginFailure")
+    .permitAll();
+}
+```
+
+
+
+## 이어서...
+
+여기까지 인증 처리 메커니즘과 폼 인증 그리고 인증에 성공했을 때와 실패했을 때에 처리 방법에 대해서 정리했다. 이어지는 내용이 **데이터베이스 인증** 과 **인증 이벤트 처리** 그리고 **로그아웃**에 대한 내용인데 길어서 일단 여기까지 끊고 다음 포스팅에서 진행할 예정이다.
