@@ -174,3 +174,96 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
+
+
+### 패스워드 해시화
+
+패스워드를 데이터베이스에 저장할 때는 패스워드를 평문 그대로 저장하지 않고 해시화한 값으로 저장하는 것이 일반적이다.
+
+| 클래스명                | 설명                                                         |
+| ----------------------- | ------------------------------------------------------------ |
+| BCryptPasswordEncoder   | **Bcrypt** 알고리즘으로 패스워드를 해시화하거나 일치 여부를 확인한다. |
+| StandardPasswordEncoder | **SHA-256** 알고리즘으로 패스워드를 해시화하거나 일치 여부를 확인한다. |
+| NoOpPasswordEncoder     | 해시화하지 않는 구현 클래스, 테스트용 클래스이므로 실제 애플리케이션에서는 사용하지 않는다. |
+
+
+
+#### BCryptPasswordEncoder
+
+- BCrypt 알고리즘으로 패스워드를 해시화하고 평문 패스워드와 일치 여부를 확인하는 구현 클래스
+- 솔트(Salt)에는 16바이트 크기의 난수(java.security.SecureRandom)가 사용
+- 기본적으로 1024(2의 10승)번 <u>스트레칭(stretching)</u> 수행
+  - <u>스트레칭</u>? 해시값의 계산을 반복하는 것
+
+
+
+### 인증 이벤트 처리
+
+- 인증 처리 결과를 다른 컴포넌트로 전달
+- 예를 들어
+  - 인증의 성공이나 실패와 같은 인증 이력을 데이터베이스나 로그에 저장하고 싶은 경우
+  - 패스워드가 연속으로 일정 횟수 이상 틀렸을 때 계정을 잠그고 싶은 경우
+
+
+
+인증 이벤트는 다음과 같은 방식으로 통지된다.
+
+<img src="./img/spring-security-auth-event.png" />
+
+1. 인증 결과(인증 정보나 인증 예외)를 AuthenticationEventPublisher에 전달해서 인증 이벤트의 통지를 의뢰한다.
+2. AuthenticationEventPublisher의 기본 구현 클래스는 인증 결과에 대한 인증 이벤트를 인스턴스로 만든 다음, ApplicationEventPublisher에 전달해서 이벤트 통지를 의뢰한다.
+3. ApplicationEventPublisher의 구현 클래스는 ApplicationListener 인터페이스의 구현 클래스에 이벤트를 통지한다.
+4. ApplicationListener의 구현 클래스 중 하나인 ApplicationListenerMethodAdaptor는 @org.springframework.context.event.EventListener가 붙은 메서드를 호출하는 방법으로 이벤트를 통지한다.
+
+
+
+#### 인증 성공 이벤트
+
+인증이 성공할 때 스프링 시큐리티가 통지하는 이벤트는 다음과 같다.
+
+중간에 오류가 발생하지 않는 한, 이 순서대로 모두 통지된다.
+
+| 이벤트 클래스                             | 설명                                                         |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| AuthenticationSuccessEvent                | **AuthenticationProvider에 의한 인증 처리가 성공**했음을 통지한다. 클라이언트가 올바른 인증 정보를 가지고 있다는 것을 알 수 있다. 단 다음 인증 처리에서 오류가 발생할 가능성이 있다. |
+| SessionFixationProtectionEvent            | **세션 고정 공격에 대비한 처리(세션 ID의 변경)가 성공**했음을 통지한다. 이 이벤트 정보를 활용하면 변경 후의 세션 ID를 알 수 있다. |
+| InteractiveAuthenticationSuccessEven**t** | **인증 처리가 모두 성공했음**을 통지한다. 이 이벤트 정보를 활용하면 화면 이동을 제외한 모든 인증 처리가 성공했다는 것을 알 수 있다. |
+
+
+
+#### 인증 실패 이벤트
+
+인증에 실패한 상황에 따라 다음 중 한 가지 이벤트가 통지된다.
+
+| 이벤트 클래스                                | 설명                                                  |
+| -------------------------------------------- | ----------------------------------------------------- |
+| AuthenticationFailureBadCredentialsEvent     | BadCredentialsException이 발생했음을 통지한다.        |
+| AuthenticationFailureDisabledEvent           | DisabledException이 발생했음을 통지한다.              |
+| AuthenticaationFailureLockedEvent            | LockedException이 발생했음을 통지한다.                |
+| AuthenticationFailureExpiredEvent            | AccountExpiredException이 발생했음을 통지한다.        |
+| AuthenticationFailureCredentialsExpiredEvent | CredentialsExpiredException이 발생했음을 통지한다.    |
+| AuthenticationFailureServiceExceptionEvent   | AuthenticationServiceException이 발생했음을 통지한다. |
+
+
+
+#### 이벤트 리스너 작성
+
+- DI 컨테이너에 등록된 빈에 @EventListener가 붙은 메서드를 만든 다음, 그 안에 하고 싶은 처리 내용을 구현하면 된다.
+
+```java
+@Component
+public class AuthenticationEventListeners {
+  
+  private static final Logger log = LoggerFactory
+    			.getLogger(AuthenticationEventListeners.class);
+  
+  @EventListener
+  public void handleBadCredentials(
+  						AuthenticationFailureBadCredentialsEvent event) {
+    log.info("Bad credentials is detected. username : {}",
+            event.getAuthentication().getName());
+    // 생략
+  }
+}
+```
+
