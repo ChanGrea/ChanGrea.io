@@ -267,3 +267,90 @@ public class AuthenticationEventListeners {
 }
 ```
 
+
+
+### 로그아웃
+
+<img src="./img/spring-security-logout.png" />
+
+1. 클라이언트는 로그아웃을 처리하는 경로로 요청을 보낸다.
+2. LogoutFilter는 LogoutHandler의 메서드를 호출해서 로그아웃 처리를 한다.
+3. LogoutFilter는 LogoutSuccessHandler의 메서드를 호출해서 화면을 이동한다.
+
+
+
+#### LogoutHandler의 구현 클래스
+
+| 클래스명                     | 설명                                       |
+| ---------------------------- | ------------------------------------------ |
+| SecurityContextLogoutHandler | 인증 정보를 제거하고 세션을 파기한다.      |
+| CookieClearingLogoutHandler  | 지정한 쿠키를 삭제하기 위한 응답을 보낸다. |
+| CsrfLogoutHnadler            | CSRF 방지용 토큰을 파기한다.               |
+
+- 스프링 시큐리티가 제공하는 빈이 LogoutFilter에 자동으로 설정되기 때문에 직접 구현할 필요는 없다. :smile:
+
+
+
+#### 로그아웃 처리 적용
+
+- 빈 정의를 해줘야 한다.
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+  // 생략
+  http.logout()
+    			.permitAll();
+}
+```
+
+
+
+#### 기본 동작 방식의 커스터마이징
+
+- 로그아웃 경로를 '/auth/logout'으로 변경
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+  // 생략
+  http.logout()
+    			.logoutUrl("/auth/logout")
+    			.permitAll();
+}
+```
+
+
+
+### 로그아웃이 성공했을 때의 응답
+
+- LogoutSuccessHandler 인터페이스와 구현 클래스 제공
+
+| 클래스명                                | 설명                                                         |
+| --------------------------------------- | ------------------------------------------------------------ |
+| SimpleUrlLogoutSuccessHandler           | 지정한 URL(defaultTargetUrl)로 리다이렉트한다.(기본적으로 사용됨) |
+| HttpStatusReturningLogoutSuccessHandler | 지정한 HTTP 상태로 응답한다.                                 |
+
+
+
+#### 기본 동작 방식
+
+- 로그인 폼을 표시하는 경로에 'logout'이라는 쿼리 파라미터가 붙은 URL로 리다이렉트
+  - '/login' :arrow_right: '/login?logout'
+
+
+
+#### 기본 동작 방식의 커스터마이징
+
+- 로그아웃이 성공했을 때 이동항 경로를 'logoutSuccess'로 변경
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+  // 생략
+  http.logout()
+    			.logoutSuccessUrl("/logoutSuccess")
+    			.permitAll();	//생략
+}
+```
+
