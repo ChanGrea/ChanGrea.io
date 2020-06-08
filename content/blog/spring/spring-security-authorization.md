@@ -27,7 +27,7 @@ category: spring
 
 
 
-### 인가 처리 구조
+### :banana: 인가 처리 구조
 
 <img src="./img/spring-security-authorization.png" />
 
@@ -38,7 +38,9 @@ category: spring
 
 
 
-### 접근 정책을 기술하는 방법
+<br />
+
+### :banana: 접근 정책을 기술하는 방법
 
 인가 처리를 적용하기 전에 **접근 정책을 기술하는 방법**에 대해서 먼저 정리한다.
 
@@ -48,9 +50,9 @@ category: spring
 
 > Spring Security에서 접근 정책을 지정할 때 **<u>스프링 표현 언어(SpEL)</u>**을 사용할 수 있다.
 
+<br />
 
-
-#### 공통 표현식
+#### :o: 공통 표현식
 
 | **표현식**                 | **설명**                                                     |
 | -------------------------- | ------------------------------------------------------------ |
@@ -62,20 +64,20 @@ category: spring
 | isFullyAuthenticated()     | Remember Me가 아닌 일반적인 인증 방법으로 로그인한 경우 true |
 | permitAll                  | 항상 true                                                    |
 | denyAll                    | 항상  false                                                  |
-| principal                  | 인증된 사용자의 **사용자  정보****(****UserDetails**  구현한 클래스의 객체) 반환 |
+| principal                  | 인증된 사용자의 **사용자  정보**(**UserDetails**  구현한 클래스의 객체) 반환 |
 | authentication             | 인증된  사용자의 **인증  정보****(Authentication**  구현한 클래스의 객체) 반환 |
 
+<br />
 
-
-#### 웹 표현식
+#### :o: 웹 표현식
 
 | **표현식**                      | **설명**                                                     |
 | ------------------------------- | ------------------------------------------------------------ |
 | hasIpAddress(String  ipAddress) | 인수에  지정한 IP 주소  체계에 클라이언트의 IP 주소가 일치하는 경우에 true  반환 |
 
+<br />
 
-
-### 웹 리소스에 대한 인가(자바 기반 설정 방식)
+### :banana: 웹 리소스에 대한 인가(자바 기반 설정 방식)
 
 먼저 접근 정책을 적용할 웹 리소스(**HTTP 요청**)를 지정한다.
 
@@ -86,15 +88,15 @@ category: spring
 | requestMatchers | 지정한 RequestMatcher  인터페이스 구현과 일치하는 리소스를 적용 대상 |
 | anyRequest      | 기타 리소스를 적용 대상                                      |
 
+<br />
 
-
-### 접근 정책의 지정
+### :banana: 접근 정책의 지정
 
 - 접근 정책을 지정할 때는 **AuthorizedUrl** 클래스의 메서드를 사용
 
 
 
-#### AuthorizedUrl 클래스의 메서드를 사용한 예
+#### :pencil: AuthorizedUrl 클래스의 메서드를 사용한 예
 
 ```java
 @Override 
@@ -111,7 +113,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 
 
-#### 경로 변수를 참조한 웹 리소스의 인가 제어 설정
+#### :wrench: 경로 변수를 참조한 웹 리소스의 인가 제어 설정
 
 ```java
 @Override
