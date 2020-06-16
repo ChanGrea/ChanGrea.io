@@ -6,7 +6,7 @@ category: spring
 
 ## 인증 처리
 
-### 데이터베이스 인증
+### :banana: 데이터베이스 인증
 
 <img src="./img/spring-security-db-auth.png" />
 
@@ -14,17 +14,17 @@ category: spring
 2. DaoAuthenticationProvider는 UserDetailsService에게 사용자 정보를 가져오게 한다.
 3. UserDetailsService 구현 클래스는 데이터 저장소에서 사용자 정보를 가져온다.
 4. UserDetailsService 구현 클래스는 데이터 저장소에서 가져온 사용자 정보를 사용해 UserDetails를 만든다.
-5. DaoAuthenticationProvider는 UserDetailsService에서 반환된 UserDetails와 클라이언트가 제공한 인증 정보를 대조해서 이요자가 정당한 사용 권한을 가지고 잇는지 확인
+5. DaoAuthenticationProvider는 UserDetailsService에서 반환된 UserDetails와 클라이언트가 제공한 인증 정보를 대조해서 이용자가 정당한 사용 권한을 가지고 있는지 확인
 
 
 
-#### UserDetails 작성
+#### :heavy_check_mark: UserDetails 작성
 
-UserDetails는 인증 처리에 필요한 자격정보(사용자명과 패스워드)와  사용자의 상태 정보를 제공하기 위한 인터페이스로서 다음과 같은 메서드가 정으돼 있다.
+UserDetails는 인증 처리에 필요한 **자격정보(사용자명과 패스워드)**와 **사용자의 상태 정보**를 제공하기 위한 인터페이스로서 다음과 같은 메서드가 정의돼 있다.
 
 <br />
 
-> UserDetails 인터페이스
+> **UserDetails** 인터페이스
 
 ```java
 public interface UserDetails extends Serializable {
@@ -77,7 +77,7 @@ public class AccountUserDetails implements UserDetails {
 
 
 
-스프링 시큐리티는 UserDetails의 구현 클래스로 User 클래스를 제공한다.
+스프링 시큐리티는 UserDetails의 구현 클래스로 **User 클래스**를 제공한다.
 
 ```java
 public class AccountDetails extends User {
@@ -100,7 +100,7 @@ public class AccountDetails extends User {
 
 
 
-#### UserDetailsService 작성
+#### :heavy_check_mark: UserDetailsService 작성
 
 - 자격정보와 사용자 상태 정보를 데이터 저장소에서 가져오기 위한 인터페이스
 
@@ -149,9 +149,9 @@ public class AccountUserDetailsService implements UserDetailsService {
 
 
 
-#### 인증 처리 적용
+#### :heavy_check_mark: 인증 처리 적용
 
-- 앞서 만든 UserDetailsService를 사용해 사용자 인증 처리를 하려면AuthenticationManagerBuilder에 UserDetailsService를 적용해야 한다.
+- 앞서 만든 UserDetailsService를 사용해 사용자 인증 처리를 하려면 **AuthenticationManagerBuilder**에 UserDetailsService를 적용해야 한다.
 
 ```java
 @EnableWebSecurity
@@ -176,19 +176,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-### 패스워드 해시화
+### :banana: 패스워드 해시화
 
-패스워드를 데이터베이스에 저장할 때는 패스워드를 평문 그대로 저장하지 않고 해시화한 값으로 저장하는 것이 일반적이다.
+패스워드를 데이터베이스에 저장할 때는 패스워드를 평문 그대로 저장하지 않고 **해시화한 값으로 저장**하는 것이 일반적이다.
 
-| 클래스명                | 설명                                                         |
-| ----------------------- | ------------------------------------------------------------ |
-| BCryptPasswordEncoder   | **Bcrypt** 알고리즘으로 패스워드를 해시화하거나 일치 여부를 확인한다. |
-| StandardPasswordEncoder | **SHA-256** 알고리즘으로 패스워드를 해시화하거나 일치 여부를 확인한다. |
-| NoOpPasswordEncoder     | 해시화하지 않는 구현 클래스, 테스트용 클래스이므로 실제 애플리케이션에서는 사용하지 않는다. |
+| 클래스명                  | 설명                                                         |
+| ------------------------- | ------------------------------------------------------------ |
+| **BCryptPasswordEncoder** | **Bcrypt** 알고리즘으로 패스워드를 해시화하거나 일치 여부를 확인한다. |
+| StandardPasswordEncoder   | **SHA-256** 알고리즘으로 패스워드를 해시화하거나 일치 여부를 확인한다. |
+| NoOpPasswordEncoder       | 해시화하지 않는 구현 클래스, 테스트용 클래스이므로 실제 애플리케이션에서는 사용하지 않는다. |
 
 
 
-#### BCryptPasswordEncoder
+#### :heavy_check_mark: BCryptPasswordEncoder
 
 - BCrypt 알고리즘으로 패스워드를 해시화하고 평문 패스워드와 일치 여부를 확인하는 구현 클래스
 - 솔트(Salt)에는 16바이트 크기의 난수(java.security.SecureRandom)가 사용
@@ -197,14 +197,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-### 인증 이벤트 처리
+### :banana: 인증 이벤트 처리
 
 - 인증 처리 결과를 다른 컴포넌트로 전달
 - 예를 들어
   - 인증의 성공이나 실패와 같은 인증 이력을 데이터베이스나 로그에 저장하고 싶은 경우
   - 패스워드가 연속으로 일정 횟수 이상 틀렸을 때 계정을 잠그고 싶은 경우
 
-
+<br />
 
 인증 이벤트는 다음과 같은 방식으로 통지된다.
 
@@ -215,38 +215,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 3. ApplicationEventPublisher의 구현 클래스는 ApplicationListener 인터페이스의 구현 클래스에 이벤트를 통지한다.
 4. ApplicationListener의 구현 클래스 중 하나인 ApplicationListenerMethodAdaptor는 @org.springframework.context.event.EventListener가 붙은 메서드를 호출하는 방법으로 이벤트를 통지한다.
 
+<br />
 
-
-#### 인증 성공 이벤트
+#### :heavy_check_mark: 인증 <u>성공</u> 이벤트
 
 인증이 성공할 때 스프링 시큐리티가 통지하는 이벤트는 다음과 같다.
 
 중간에 오류가 발생하지 않는 한, 이 순서대로 모두 통지된다.
 
-| 이벤트 클래스                             | 설명                                                         |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| AuthenticationSuccessEvent                | **AuthenticationProvider에 의한 인증 처리가 성공**했음을 통지한다. 클라이언트가 올바른 인증 정보를 가지고 있다는 것을 알 수 있다. 단 다음 인증 처리에서 오류가 발생할 가능성이 있다. |
-| SessionFixationProtectionEvent            | **세션 고정 공격에 대비한 처리(세션 ID의 변경)가 성공**했음을 통지한다. 이 이벤트 정보를 활용하면 변경 후의 세션 ID를 알 수 있다. |
-| InteractiveAuthenticationSuccessEven**t** | **인증 처리가 모두 성공했음**을 통지한다. 이 이벤트 정보를 활용하면 화면 이동을 제외한 모든 인증 처리가 성공했다는 것을 알 수 있다. |
+| 이벤트 클래스                               | 설명                                                         |
+| ------------------------------------------- | ------------------------------------------------------------ |
+| Authentication<br />SuccessEvent            | **AuthenticationProvider에 의한 인증 처리가 성공**했음을 통지한다. 클라이언트가 올바른 인증 정보를 가지고 있다는 것을 알 수 있다. 단 다음 인증 처리에서 오류가 발생할 가능성이 있다. |
+| SessionFixation<br />ProtectionEvent        | **세션 고정 공격에 대비한 처리(세션 ID의 변경)가 성공**했음을 통지한다. 이 이벤트 정보를 활용하면 변경 후의 세션 ID를 알 수 있다. |
+| InteractiveAuthentication<br />SuccessEvent | **인증 처리가 모두 성공했음**을 통지한다. 이 이벤트 정보를 활용하면 화면 이동을 제외한 모든 인증 처리가 성공했다는 것을 알 수 있다. |
 
+<br />
 
-
-#### 인증 실패 이벤트
+#### :heavy_check_mark: 인증 <u>실패</u> 이벤트
 
 인증에 실패한 상황에 따라 다음 중 한 가지 이벤트가 통지된다.
 
-| 이벤트 클래스                                | 설명                                                  |
-| -------------------------------------------- | ----------------------------------------------------- |
-| AuthenticationFailureBadCredentialsEvent     | BadCredentialsException이 발생했음을 통지한다.        |
-| AuthenticationFailureDisabledEvent           | DisabledException이 발생했음을 통지한다.              |
-| AuthenticaationFailureLockedEvent            | LockedException이 발생했음을 통지한다.                |
-| AuthenticationFailureExpiredEvent            | AccountExpiredException이 발생했음을 통지한다.        |
-| AuthenticationFailureCredentialsExpiredEvent | CredentialsExpiredException이 발생했음을 통지한다.    |
-| AuthenticationFailureServiceExceptionEvent   | AuthenticationServiceException이 발생했음을 통지한다. |
+| 이벤트 클래스                                          | 설명                                                  |
+| ------------------------------------------------------ | ----------------------------------------------------- |
+| AuthenticationFailure<br />**BadCredentials**Event     | BadCredentialsException이 발생했음을 통지한다.        |
+| AuthenticationFailure<br />**Disabled**Event           | DisabledException이 발생했음을 통지한다.              |
+| AuthenticaationFailure<br />**Locked**Event            | LockedException이 발생했음을 통지한다.                |
+| AuthenticationFailure<br />**Expired**Event            | AccountExpiredException이 발생했음을 통지한다.        |
+| AuthenticationFailure<br />**CredentialsExpired**Event | CredentialsExpiredException이 발생했음을 통지한다.    |
+| AuthenticationFailure<br />**ServiceException**Event   | AuthenticationServiceException이 발생했음을 통지한다. |
 
+<br />
 
-
-#### 이벤트 리스너 작성
+#### :heavy_check_mark: 이벤트 리스너 작성
 
 - DI 컨테이너에 등록된 빈에 @EventListener가 붙은 메서드를 만든 다음, 그 안에 하고 싶은 처리 내용을 구현하면 된다.
 
@@ -267,9 +267,9 @@ public class AuthenticationEventListeners {
 }
 ```
 
+<br />
 
-
-### 로그아웃
+### :banana: 로그아웃
 
 <img src="./img/spring-security-logout.png" />
 
@@ -277,9 +277,9 @@ public class AuthenticationEventListeners {
 2. LogoutFilter는 LogoutHandler의 메서드를 호출해서 로그아웃 처리를 한다.
 3. LogoutFilter는 LogoutSuccessHandler의 메서드를 호출해서 화면을 이동한다.
 
+<br />
 
-
-#### LogoutHandler의 구현 클래스
+#### :heavy_check_mark: LogoutHandler의 구현 클래스
 
 | 클래스명                     | 설명                                       |
 | ---------------------------- | ------------------------------------------ |
@@ -289,9 +289,9 @@ public class AuthenticationEventListeners {
 
 - 스프링 시큐리티가 제공하는 빈이 LogoutFilter에 자동으로 설정되기 때문에 직접 구현할 필요는 없다. :smile:
 
+<br />
 
-
-#### 로그아웃 처리 적용
+#### :heavy_check_mark: 로그아웃 처리 적용
 
 - 빈 정의를 해줘야 한다.
 
@@ -304,9 +304,9 @@ protected void configure(HttpSecurity http) throws Exception {
 }
 ```
 
+<br />
 
-
-#### 기본 동작 방식의 커스터마이징
+#### :heavy_check_mark: 기본 동작 방식의 커스터마이징
 
 - 로그아웃 경로를 '/auth/logout'으로 변경
 
@@ -320,27 +320,27 @@ protected void configure(HttpSecurity http) throws Exception {
 }
 ```
 
+<br />
 
-
-### 로그아웃이 성공했을 때의 응답
+### :banana: 로그아웃이 성공했을 때의 응답
 
 - LogoutSuccessHandler 인터페이스와 구현 클래스 제공
 
-| 클래스명                                | 설명                                                         |
-| --------------------------------------- | ------------------------------------------------------------ |
-| SimpleUrlLogoutSuccessHandler           | 지정한 URL(defaultTargetUrl)로 리다이렉트한다.(기본적으로 사용됨) |
-| HttpStatusReturningLogoutSuccessHandler | 지정한 HTTP 상태로 응답한다.                                 |
+| 클래스명                                      | 설명                                                         |
+| --------------------------------------------- | ------------------------------------------------------------ |
+| SimpleUrl<br />LogoutSuccessHandler           | 지정한 URL(defaultTargetUrl)로 리다이렉트한다.(기본적으로 사용됨) |
+| HttpStatusReturning<br />LogoutSuccessHandler | 지정한 HTTP 상태로 응답한다.                                 |
 
+<br />
 
-
-#### 기본 동작 방식
+#### :heavy_check_mark: 기본 동작 방식
 
 - 로그인 폼을 표시하는 경로에 'logout'이라는 쿼리 파라미터가 붙은 URL로 리다이렉트
   - '/login' :arrow_right: '/login?logout'
 
+<br />
 
-
-#### 기본 동작 방식의 커스터마이징
+#### :heavy_check_mark: 기본 동작 방식의 커스터마이징
 
 - 로그아웃이 성공했을 때 이동항 경로를 'logoutSuccess'로 변경
 

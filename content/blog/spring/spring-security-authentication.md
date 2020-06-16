@@ -6,11 +6,11 @@ category: spring
 
 ## Intro
 
-[이전 포스팅](https://changrea.io/spring/spring-security-start/)에서 스프링 시큐리티의 개요와 특징, 설정, 아키텍처에 대한 내용에 대해 정리했엇다.
+[이전 포스팅](https://changrea.io/spring/spring-security-start/)에서 스프링 시큐리티의 개요와 특징, 설정, 아키텍처에 대한 내용에 대해 정리했었다.
 
 이번 포스팅에서는 연계 시리즈 2번째, **인증**에 대해서 정리하려고 한다.
 
-- 스프링 시큐리티, 설정, 아키텍처
+- [스프링 시큐리티, 설정, 아키텍처](https://changrea.io/spring/spring-security-start/)
 - **인증** / 인가
 - CSRF 방지
 - 세션 관리
@@ -19,18 +19,18 @@ category: spring
 
 ## 인증 처리
 
-### 인증(Authentication)?
+### :banana: 인증(Authentication)?
 
 애플리케이션을 이용하는 사용자의 정당성을 확인하기 위한 기능으로 아래와 같이 여러가지 방법이 있다.
 
-- 사용자 정보를 데이터 저장소에 등록해 두고, 입력 정보와 비교하는 방법
-- HTML 입력 폼을 사용하는 방식
-- RFC에서 정해진 HTTP 표준 인증 방식(Basic 인증, Digest 인증 등)을 이용
-- OpenID 인증이나 싱글 사인온 인증 같은 인증 방식 이용
+- 사용자 정보를 **데이터 저장소**에 등록해 두고, 입력 정보와 비교하는 방법
+- **HTML 입력 폼**을 사용하는 방식
+- RFC에서 정해진 HTTP 표준 인증 방식(**Basic 인증, Digest 인증 등**)을 이용
+- **OpenID** 인증이나 **Single-Sign-On** 인증 같은 인증 방식 이용
 
 
 
-### 인증 처리 메커니즘
+### :banana: 인증 처리 메커니즘
 
 개괄적인 인증 처리 프로세스는 아래와 같다.
 
@@ -42,7 +42,7 @@ category: spring
 
 
 
-#### 인증 필터(Authentication Filter)
+#### :o: 인증 필터(Authentication Filter)
 
 - 인증 처리 방식에 대한 **구현을 제공**하는 서블릿 필터
 - 다양한 서블릿 필터 클래스 제공
@@ -53,7 +53,7 @@ category: spring
 
 
 
-#### AuthenticationManager
+#### :o: AuthenticationManager
 
 - **인증 처리를 수행**하기 위한 인터페이스
 - **ProviderManager**는 스프링 시큐리티에서 제공하는 기본 구현체
@@ -61,14 +61,14 @@ category: spring
 
 
 
-#### AuthenticationProvider
+#### :o: AuthenticationProvider
 
 - **인증 처리 기능을 구현**하기 위한 인터페이스
 - 위 그림에서는 사용자의 자격정보와 상태 정보를 확인하기 위한 **DaoAuthenticationProvider**를 사용하였다.
 
 
 
-### 폼 인증
+### :banana: 폼 인증 (Form Authentication)
 
 스프링 시큐리티는 다음과 같은 흐름으로 폼 인증을 수행한다.
 
@@ -80,7 +80,7 @@ category: spring
 
 
 
-#### 폼 인증 적용
+#### :heavy_check_mark: 폼 인증 적용
 
 자바 기반 설정 방식으로 정리한다.
 
@@ -97,7 +97,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-#### 기본 동작
+#### :heavy_check_mark: 기본 동작
 
 설정만 잘 했다면, **'/login' 경로에 GET 메서드를 호출**하면 스프링 시큐리티가 제공하는 **기본 로그인 폼**이 표시된다.
 
@@ -107,7 +107,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-#### 로그인 폼의 작성
+#### :heavy_check_mark: 로그인 폼의 작성
 
 여기서는 "src/main/webapp/views/" 아래에 **loginForm.jsp**라는 로그인 폼 파일이 이미 있다고 가정하고 진행한다.
 
@@ -159,7 +159,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 
 
-### 인증이 성공했을 때의 응답
+### :banana: 인증이 <u>성공</u>했을 때의 응답
 
 > AuthenticationSuccessHandler의 구현 클래스
 
@@ -170,7 +170,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 
 
-#### 기본 동작
+#### :heavy_check_mark: 기본 동작
 
 - 인증 전에 접근 시도한 요청을 HTTP 세션에 저장해 뒀다가 인증 성공 후에 복원해서 리다이렉트
 - 경로에 접근권한이 있으면 페이지 표시, 없으면 인증 오류 발생
@@ -178,7 +178,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 
 
-#### 기본 동작 방식의 커스터마이징
+#### :heavy_check_mark: 기본 동작 방식의 커스터마이징
 
 - 인증 성공했을 때 이동할 기본 경로를 **'/menu'**로 변경
 
@@ -194,7 +194,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 
 
-### 인증이 실패했을 때의 응답
+### :banana: 인증이 <u>실패</u>했을 때의 응답
 
 > AuthenticationFailureHandler의 구현 클래스
 
@@ -206,14 +206,14 @@ protected void configure(HttpSecurity http) throws Exception {
 
 
 
-#### 기본 동작 방식
+#### :heavy_check_mark: 기본 동작 방식
 
 - 로그인 폼을 표시하는 경로에 **error**라는 쿼리 파라미터가 붙은 URL로 리다이렉트
   - '/login' :arrow_right: '/login?error'
 
 
 
-#### 기본 동작 방식의 커스터마이징
+#### :heavy_check_mark: 기본 동작 방식의 커스터마이징
 
 - '/loginf=Failure'로 변경
 
