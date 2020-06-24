@@ -41,7 +41,7 @@ Cross-Site HTTP Requests에 대한 요구가 늘어나자 **W3C**에서 `CORS` �
 
 
 
-### :construction: CORS 프로세스
+### :construction: CORS 메커니즘
 
 <img src="./img/cors_wiki.png" />
 
@@ -54,12 +54,165 @@ Cross-Site HTTP Requests에 대한 요구가 늘어나자 **W3C**에서 `CORS` �
 <span style="color: green;">녹색</span>으로 표시된 부분과 <span style="color: red;">적색</span>으로 표시된 부분을 나눠서 살펴보자.
 
 <div style="border: 3px solid RGB(220, 233, 213); padding:5px;">
-1. 먼저 Cross-domain Ajax 요청이 들어오면 브라우저에서는 <code class="language-text">GET</code> 또는 <code class="language-text">HEAD</code> 요청인지를 본다.<br>
-  2. 단순히 데이터를 가져오기 위한 GET과 HEAD 요청이라면 사용자가 정의한 HTTP header(<code class="language-text">custom HTTP header</code>) 항목이 있는지 검사한다.
+  1. 먼저 Cross-domain Ajax 요청이 들어오면 브라우저에서는 <code class="language-text">GET</code> 또는 <code class="language-text">HEAD</code> 요청인지를 본다.<br>
+  &nbsp 1-1. GET과 HEAD 외 요청이라면, <code class="language-text">POST</code> 요청 여부를 검사한다.<br>
+  &nbsp 1-2. POST 요청이라면 요청이 표준의 <code class="language-text">content-type</code>인지를 검사하고, 그 외에는 모두 OPTIONS 요청을 보낸다.<br>
+  2. 단순히 데이터를 가져오기 위한 GET과 HEAD 요청이라면 사용자가 정의한 HTTP header(<code class="language-text">custom HTTP header</code>) 항목이 있는지 검사한다.<br>
+  &nbsp 2-1. Custom HTTP header 항목이 있다면, OPTIONS요청을 보낸다.<br>
+  3. Custom HTTP header가 없으면 그대로 요청을 보낸다.
 </div>
 
 <br>
 
+최초 Ajax 요청 시, `GET, HEAD, POST `요청이 아니거나 또는 POST 요청이라도 `custom HTTP header`가 포함되어 있거나, 
+
+`표준으로 정한 content-type이 아닌 요청`(**application/x-www-form-urlencoded, mutipart/form-data, text/plain 외의 모든 type**)이면 모두 **'Preflighted Request'** 라고 하는 OPTIONS 요청을 보내게 된다.
+
 <div style="border: 3px solid RGB(223, 186, 177); padding:5px;">
-  
-</div>
+  1. 위에 조건에 해당하는 경우 모두 OPTIONS 요청을 먼저 보낸다.<br>
+  2. OPTIONS 요청에 대한 응답으로 'Access-Control-*' 형식의 헤더가 포함된 응답을 받게 된다.(Server 영역)<br>(여기서 요청을 보낸 Origin, Method, Custom Header, Credential 등이 없다면, ajax 요청은 CORS 정책에 의해 거부된다.)</div>
+
+
+
+### 그럼 CORS Error를 방지하려면?
+
+<img src="./img/cors_error.png" />
+
+<br>
+
+> 웹 개발을 해봤다면 한 번쯤은 위와 같은 에러를 봤을 것이다. 위 에러를 없애기 위해서 Chrome CORS 플러그인도 써보고 proxy하는 방법도 써보고 그래도 뭔가 안되자 ~~포기~~.. 결국에는 해결했던 기억이 난다.
+>
+> CORS에 대해 먼저 이렇게 정리하고 이해한 뒤에 했다면 좀 더 수월하지 않았을까 하는 아쉬움도 든다.
+
+CORS Error를 방지하는 것은 위 정리된 내용을 참조하여 생각해보고 조금 검색만 해봐도 충분히 해결할 수 있다.
+
+#### 1. Chrome CORS plugin 사용
+
+<img src="./img/cors-plugin.png" />
+
+Chrome을 사용하고 있다면, 웹 스토어에서 CORS 플러그인을 다운로드 받아 사용하는 방법이 있다.
+
+하지만 이 방법의 경우에는 **Access-Control-Allow-Origin: \*** 과 **Access-Control-Allow-Method:** 만 추가될 뿐 다른 것을 커스터마이징 할 수 없다.
+
+> :arrow_right: 인증/인가를 위해서는 좀 더 커스터마이징이 필요하다.
+
+결국은 Server에서 설정을 해주는 방법이 가장 확실한 것 같다.
+
+#### 2. Server에서 CORS 허용 설정
+
+**node.js의 express**를 사용하는 경우에는 **cors** 라는 미들웨어를 사용한다. 아래는 [https://www.npmjs.com/package/cors](https://www.npmjs.com/package/cors) 에 있는 간단한 사용예제이다.
+
+해당 사이트를 들어가보면, 이 외에도 다양한 옵션 지정이 가능하다.
+
+```javascript
+var express = require('express')
+var cors = require('cors')
+var app = express()
+ 
+app.use(cors())
+ 
+app.get('/products/:id', function (req, res, next) {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+ 
+app.listen(80, function () {
+  console.log('CORS-enabled web server listening on port 80')
+})
+```
+
+**Java의 Spring Framework**를 사용하는 경우에는 몇 가지 방법이 존재한다.
+
+아래 방법 중 한 가지 골라서 사용하는 것이 좋을 듯 하다. (뭣도 모르고 여러가지 썼었다가 왜 안되지 하고 계속 삽질했었다.)
+
+1. Filter에서 설정 (**CorsFilter**)
+
+   ```java
+   public class MyCorsFilter extends CorsFilter {
+    
+       public MyCorsFilter() {
+           super(configurationSource());
+       }
+    
+       private static UrlBasedCorsConfigurationSource configurationSource() {
+           CorsConfiguration config = new CorsConfiguration();
+           config.setAllowCredentials(true);
+           config.addAllowedOrigin("http://localhost:3000");
+           config.addAllowedHeader("*");
+           config.addAllowedMethod("*");
+           UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+           source.registerCorsConfiguration("/**", config);
+           return source;
+       }
+   }
+   ```
+
+   
+
+2. Interceptor에서 설정
+
+   ```java
+   @Component
+   public class WebInterceptor implements HandlerInterceptor {
+   
+   	@Override
+   	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object exception) throws Exception {
+   		response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:3000");
+   		response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+   		response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
+   	}
+   }
+   ```
+
+   
+
+3. 사용하는 메소드에 **@CrossOrigin** 어노테이션 지정
+
+   - 개별적으로 설정하는 방법
+
+     ```java
+     @CrossOrigin(maxAge = 3600)
+     @RestController
+     @RequestMapping("/example")
+     public class ExampleController {
+      
+         @CrossOrigin("http://localhost:3000")
+         @RequestMapping("/{id}")
+         public Example retrieve(@PathVariable Long id) {
+             // ...
+         }
+     }
+     ```
+
+     
+
+4. webmvc에서 제공하는 cors 설정 이용 (**WebMvcConfigure**)
+
+   - Global하게 설정하는 방법
+
+     ```java
+     @Configuration
+     @EnableWebMvc
+     public class WebMvcConfiguration implements WebMvcConfigurer {
+     
+         @Override
+         public void addCorsMappings(CorsRegistry registry) {
+             registry.addMapping("/**")
+                     .allowedOrigins("http://localhost:3000")
+                     .allowedMethods("GET", "POST", "PUT", "DELETE");
+         }
+     }
+     ```
+
+     
+
+
+
+## 인증/인가(작성중)
+
+- simple request
+- preflight request
+- credential request
+
+> 참고) access-control-allow-origin: * 로 하면 안되고, 도메인 하나하나 지정해줘야 함
+
+- non-credential request
