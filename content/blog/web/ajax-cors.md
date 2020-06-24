@@ -100,7 +100,7 @@ Chrome을 사용하고 있다면, 웹 스토어에서 CORS 플러그인을 다�
 
 #### 2. Server에서 CORS 허용 설정
 
-**node.js의 express**를 사용하는 경우에는 **cors** 라는 미들웨어를 사용한다. 아래는 [https://www.npmjs.com/package/cors](https://www.npmjs.com/package/cors) 에 있는 간단한 사용예제이다.
+***node.js의 express***를 사용하는 경우에는 **cors** 라는 미들웨어를 사용한다. 아래는 [https://www.npmjs.com/package/cors](https://www.npmjs.com/package/cors) 에 있는 간단한 사용예제이다.
 
 해당 사이트를 들어가보면, 이 외에도 다양한 옵션 지정이 가능하다.
 
@@ -120,7 +120,7 @@ app.listen(80, function () {
 })
 ```
 
-**Java의 Spring Framework**를 사용하는 경우에는 몇 가지 방법이 존재한다.
+***Java의 Spring Framework***를 사용하는 경우에는 몇 가지 방법이 존재한다.
 
 아래 방법 중 한 가지 골라서 사용하는 것이 좋을 듯 하다. (뭣도 모르고 여러가지 썼었다가 왜 안되지 하고 계속 삽질했었다.)
 
@@ -207,12 +207,113 @@ app.listen(80, function () {
 
 
 
-## 인증/인가(작성중)
+## CORS Request의 종류 그리고 인증..
 
-- simple request
-- preflight request
-- credential request
+CORS 관점에서 보는 요청의 종류는 4가지이다.
 
-> 참고) access-control-allow-origin: * 로 하면 안되고, 도메인 하나하나 지정해줘야 함
+- Simple Request
+- 'Preflighted' Request
+- 'Credentialed' Request
 
-- non-credential request
+- 'Non-Credential' Request
+
+### :heavy_check_mark: Simple Request
+
+보통은 CORS에 해당하면 **Preflight** 라고 해서 OPTIONS method를 통해 이 요청이 전송하기에 안전한지를 체크하는 요청을 보낸다. (Preflighted Request)
+
+그런데 이런 체크하는 행위를 할 필요 없는 요청을 보낼 때가 있다. <u>아래의 조건</u>에 해당하는 케이스다.
+
+- GET, HEAD, POST 중 하나의 요청
+- Custom Header가 없는 경우 (아래의 header만 가능)
+  - Accept, Accept-Language, Content-Language, Content-Type, DPR, Downlink, Save-Data, Viewport-Width, Width
+- Content-Type는 아래의 값들만 허용
+  - application/x-www-form-urlencoded, multipart/form-data, text/plain
+
+
+
+### :heavy_check_mark: Preflighted Request
+
+Simple Request와 달리 OPTIONS method를 통해 Cross-site 요청에 대해 전송이 안전한지를 체크한다. 
+
+위에서 언급한 Simple Request의 조건에 해당하지 않는다면 아래와 같이 OPTIONS 요청을 보낸다.
+
+```markdown
+// OPTIONS Request
+OPTIONS /resources/post-here/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:71.0) Gecko/20100101 Firefox/71.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Connection: keep-alive
+Origin: http://foo.example
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-PINGOTHER, Content-Type
+
+// OPTIONS Response
+HTTP/1.1 204 No Content
+Date: Mon, 01 Dec 2008 01:15:39 GMT
+Server: Apache/2
+Access-Control-Allow-Origin: https://foo.example
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+Access-Control-Allow-Headers: X-PINGOTHER, Content-Type
+Access-Control-Max-Age: 86400
+Vary: Accept-Encoding, Origin
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+```
+
+<u>Request 부분</u>을 보면 `Origin`, `Access-Control-Request-Method`, `Access-Control-Request-Headers` 항목이 있다.
+
+예제에서는 **foo.example** 에서 /resources/post-hear/ 로 **X-PINGOTHER** 라는 커스텀 헤더를 포함하여 **POST** 요청을 보냈다.
+
+그 전에 브라우저에서는 OPTIONS 요청을 통해 해당 요청이 안전한지를 체크한다. 이후 OPTIONS 요청에 대해 **'Access-Control'** prefix가 붙은 여러가지 항목이 포함된 응답을 받는다.
+
+<u>Resonse 부분</u>을 보면 `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers` 항목이 있다.
+
+요청에 대해서 해당하는 origin, method, header는 허용하겠다는 의미의 응답이다.
+
+
+
+### :heavy_check_mark: Credentialed 와 Non-Credentialed Request
+
+기본적으로 CORS에서 브라우저는 자격 증명 즉 Cookie나 인증에 필요한 정보, 세션 정보(JSESSIONID) 등을 보내지 않는다.
+
+하지만, `Authentication`, `Authorization`을 구현하기 위해서는 자격 증명이 필요하다. 보통은 Cookie나 JSESSIONID를 서버에 전송하고 서버에서 그것들을 체크하여 인증/인가를 수행한다.
+
+#### :o: Cookie를 보내기 위한 플래그
+
+```javascript
+const invocation = new XMLHttpRequest();
+const url = 'http://bar.other/resources/credentialed-content/';
+    
+function callOtherDomain() {
+  if (invocation) {
+    invocation.open('GET', url, true);
+    invocation.withCredentials = true;
+    invocation.onreadystatechange = handler;
+    invocation.send(); 
+  }
+}
+```
+
+7행을 보면 **withCredentials** 항목을 true로 지정함으로써, Cookie를 서버에 함께 보낸다. (jQuery나 fetch 등 라이브러리 별로 지정하는 방법이 조금씩 다르다.)
+
+#### :o: 서버에서도 Credential을 허용해야 한다.
+
+브라우저에서 Cookie와 함께 요청을 보냈다고 하더라도, 서버에서 이를 허용하지 않으면 응답은 무시된다.
+
+```markdown
+Access-Control-Allow-Credentials: true
+```
+
+> :exclamation: Credentialed Request의 경우 Access-Control-Allow-Origin 항목을 도메인 하나하나 지정해줘야 한다는 점에 주의하자.
+
+
+
+## 마무리
+
+CORS에 대한 내용은 **모든 개발자**가 알고 있어야 한다고 말한다. 명확하게는 웹 개발자, 서버 개발자, 프론트엔드 개발자들이다.
+
+그동안 이런 내용을 알기 전까지는 크롬 플러그인 같은 편법(?)으로 하다가 잘 안되고 헤매고 서버 개발자에게 말해도 모르쇠 태도에 지쳤었는데, 이제는 이런 내용을 알았기 때문에 서버 개발자에게 자신있게 요청할 수 있지 않을까..?
+
