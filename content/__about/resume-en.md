@@ -22,65 +22,23 @@ One more step for a better tomorrow than yesterday...
 
 </div>
 
-<br/>
-
-# :wrench: Skill Set (작성중)
-
-## Frontend
-
-- HTML / CSS / Javascript
-  - ES6, ES5
-- React.js
-  - Webpack
-- Vue.js
-- Angular.js
-  - Gulp
-  - Bower
-
-## Backend
-
-- Java
-  - Spring
-  - Spring MVC
-  - Spring Security
-  - RESTful API
-  - JPA
-  - MyBatis
-- C++
-- Go
-
-## Infra
-
-- Docker
-- Kong (API Gateway)
-
-## Tool
-
-### # GitKraken
-
-### # IntelliJ IDEA
-
-### # VSCode
-
-<br/>
-
 # 💼 Work Experiences
 
 ## KT
 
-|                 |                                                 |
-| --------------- | ----------------------------------------------- |
-| **period**      | 20.01.24 ~ current                              |
-| **position**    | Software Developer                              |
-| **description** | Developer belonging to **SW Dev Project** team. |
-| **projects**    | <i>(to be added..)</i>                          |
+|                 |                                                                    |
+| --------------- | ------------------------------------------------------------------ |
+| **period**      | 20.01.24 ~ current                                                 |
+| **position**    | Software Developer                                                 |
+| **description** | Developer belonging to **SW Dev Project** team.                    |
+| **projects**    | **마음을 담다 - 소리선물 프로젝트** CMS 개발 (20.03.24 ~ 20.06.30) |
 
 |                 |                                                                                           |
 | --------------- | ----------------------------------------------------------------------------------------- |
 | **period**      | 18.10.29 ~ 20.01.23                                                                       |
 | **position**    | Software Developer                                                                        |
 | **description** | Develop Route Planning Algorithm and Analysis Tools belonging to **GIS Server Dev** team. |
-| **projects**    | RP Viewer(Analysis tool) Renewal to React App                                             |
+| **projects**    | <ul><li>RP Viewer(Analysis tool) Renewal to React App</li><li>RP VoC Analysis</li></ul>   |
 
 ## Deawoo Information System
 
