@@ -1,5 +1,5 @@
 ---
-title: ESLint와 Prettier로 코드를 예쁘게!!(feat. VScode)
+title: vscode에서 ESLint와 Prettier로 코드 정리하기
 date: 2019-09-15 19:09:62
 category: web
 ---
@@ -135,6 +135,16 @@ _Prettier는 Code Formatting 도구이며, 코드를 규칙에 따라 정렬해�
   "printWidth": 80
 }
 ```
+
+#### :exclamation: (수정사항 - 2020.07.16)
+
+최근에 React.js 프로젝트용 보일러플레이트를 만들다가 ESLint랑 Prettier 적용 중 둘의 충돌 때문에 좀 애먹었다. 대안을 찾던 중 [prettier-eslint](https://www.npmjs.com/package/prettier-eslint) 라는 도구를 사용했더니 깔끔하게 해결되었다.
+
+```bash
+yarn add prettier-eslint --dev
+```
+
+> (참고) 또한 [Velopert](https://velog.io/@velopert/eslint-and-prettier-in-react)님은 prettier-eslint 말고 [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier) 라는 도구를 더 선호한다고 소개한다. 자바스크립트 관련된 문법체크는 eslint가 하고, 코드 스타일 관리는 prettier가 하도록 완벽하게 나눠준다고 하니 사용해보자.
 
 ### :heavy_check_mark: 코드 저장 시, 자동 포맷팅 설정
 
