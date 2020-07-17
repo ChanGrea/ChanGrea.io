@@ -102,6 +102,65 @@ Lombok이라는 플러그인이 편리하고 코드를 많이 줄여준다는 �
 
 
 
+#### Example code
+
+> Request DTO
+
+```java
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+public class PostsSaveRequestDto {
+  private String title;
+  private String content;
+  private String author;
+  
+  @Builder
+  public PostsSaveRequestDto(String title, String content, String author) {
+    this.title = title;
+    this.content = content;
+    this.author = author;
+  }
+  
+  public Posts toEntity() {
+    return Posts.builder()
+      .title(title)
+      .content(content)
+      .author(author)
+      .build();
+  }
+}
+```
+
+
+
+> Response DTO
+
+```java
+@Getter
+public class PostsResponseDto {
+  
+  private Long id;
+  private String title;
+  private String content;
+  private String author;
+  
+  public PostsResponseDto(Posts entity) {
+    this.id = entity.id;
+    this.title = entity.title;
+    this.content = entity.content;
+    this.author = entity.author;
+  }
+}
+```
+
+
+
+
+
 ### :baby_chick: ​@Autowired의 남발:crying_cat_face: (작성중)
 
 Spring 개발을 해봤다면, Controller와 Service에서 @Autowired가 있는 것을 많이 봤을 것이다.
