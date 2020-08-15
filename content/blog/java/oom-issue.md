@@ -128,3 +128,128 @@ OOM에 대응하는 방법은 인터넷을 찾아보니 여러 곳에서 소개�
 
 Minor GC가 주기적으로 발생하는데도 QueryPlanCache가 차지하는 메모리는 줄지 않았다.
 
+<br>
+
+[이 stackoverflow 글](https://stackoverflow.com/questions/31557076/spring-hibernate-query-plan-cache-memory-usage)을 보니 문제를 쉽게(?) 발견할 수 있었다.
+
+> Using Hibernate 4.2 and MySQL in a project with an in-clause query such as: `select t from Thing t where t.id in (?)`
+>
+> Hibernate caches these parsed HQL queries. Specifically the Hibernate `SessionFactoryImpl` has `QueryPlanCache` with `queryPlanCache` and `parameterMetadataCache`. But this proved to be a problem when the number of parameters for the in-clause is large and varies.
+>
+> ... 생략
+
+<br>
+
+하이버네이트는  `select t from Thing t where t.id in (?)` 같은 **in-clause**가 사용된 HQL 쿼리들을  캐싱한다.
+
+하이버네이트의 `SessionFactoryImpl`는 queryPlancache와 parameterMetadataCache로 구성된 `QueryPlanCache`를 가진다.
+
+문제는 **in clause에 쓰이는 파라미터의 개수**다. 6000개의 파라미터가 쓰인 쿼리와 60001개의 파라미터가 쓰인 쿼리는 다른 것이기 때문에 캐시에 쌓인다.
+
+
+
+### 문제의 정확한 원인을 찾기 위한 삽질(3)
+
+#### :heavy_check_mark: 원인 발견
+
+문제의 실마리를 찾았다. 다시 HeapDump 분석을 했던 MAT에서 해당 QueryPlanCache 부분의 Attribute를 자세히 봤다.
+
+<img src="./img/issue-attribute.png" /> 
+
+여러 항목 중의 하나만 확인한 결과이다.
+
+역시나 stackoverflow 글 처럼 **in-clause** 쿼리가 발견되었고, 각 항목의 in에 쓰인 파라미터의 개수는 모두 달랐다.
+
+
+
+#### :heavy_check_mark: 그럼 왜 OOM 이슈가 난 것일까?
+
+in-clause의 사용 때문에 문제가 발생한 것이라면 파라미터의 개수가 계속 가변적으로 변하면서 메모리가 쌓였다는 뜻인데 일반적으로는 이해가 되지 않았다.
+
+그래서 해당 쿼리를 사용한 코드를 좀 더 봤다.
+
+> :exclamation: 이 쿼리는 장기 미접속 여부를 체크하기 위해 사용되던 쿼리이다.
+
+1. 하루에 한번 씩 Batch Scheduling을 돌리는 부분
+2. 일반적으로 휴면 여부를 확인하는 API
+
+크게 위 두 군데서 사용하고 있었다.
+
+상용 테스트를 하면서 서버를 재기동한지 얼마 되지 않았기 때문에 Batch의 경우에는 크게 영향이 없을 거라고 판단했다.
+
+그럼 **일반적으로 휴면 여부를 확인하는 API**를 <u>다수, 그것도 파라미터의 개수가 가변적으로 변하는 경우</u>가 발생했다는 것으로 생각되었다.
+
+<br>
+
+**2020년 7월 25일**에 행사가 있었고 장애 발생에 대응하기 위해서 <u>BackOffice를 띄워놓고 약 3시간 가량 대기</u>했었다.
+
+그 날 오픈 행사 참석자는 큰 서비스는 아니기 때문에 많지는 않았지만 약 100명 가까이 된 것으로 알고 있다. 아마 앱을 처음 사용하는 분도 있었지만, 가이드를 위해서 <u>앱을 접속하는 건이 평소에 테스트할 때보다 훨씬 많았을 것</u>이다.
+
+해당 쿼리에 쓰인 in-clause에는 실시간으로 접속 기록 건이 추가되기 때문에 파라미터의 개수가 가변적으로 변한다. 또한 메인화면에서는 이 쿼리를 약 10분마다 호출해서 체크하는 로직이 있었다.
+
+행사 당일은 메모리가 잘 버틴 것 같다. :lying_face: 하지만 행사가 끝나고 나서 사용 통계 분석을 위해서 계속 접속을 해놨었던 것 같다. 그렇게 문제가 발생한 것이다.
+
+
+
+## 문제의 원흉 제거와 해결
+
+>사실 해당 이슈는 JPA를 사용하고 서비스를 운영하면서 다른 곳에서도 겪게 되는 경우가 종종 있는 것 같다. [NHN Toast Meetup!](https://meetup.toast.com/posts/211) 이 곳에도 원인과 해결방법이 나와 있다.
+>
+>그리고 우아한 형제들 기술 블로그의 [도움이 될수도 있는 JVM memory leak 이야기](https://woowabros.github.io/tools/2019/05/24/jvm_memory_leak.html) 도 많은 도움이 되었다.
+
+### :heavy_check_mark: In-clause 쿼리 모두 제거 그리고 로직 수정
+
+해당 쿼리를 포함하여 다른 In-clause 쿼리가 하나 더 있었다. 우선 해당 쿼리를 모두 제거하기로 결정했고, 다른 로직으로 수정이 필요했다.
+
+가장 베스트는 DB 테이블의 컬럼을 하나 추가하는 것이었다. 하지만 이 방법은 서비스 서버의 수정도 요구되었기 때문에 공수가 적은 다른 방법이 필요했다.
+
+팀원들과 상의를 통해 `Join` 쿼리를 사용하는 방법으로 이야기가 나왔고, Join에 사용하는 테이블도 다른 테이블을 사용하도록 수정되었다.
+
+또한 **약 10분 마다 API를 호출하던 로직**도 시간을 수정했다. (실시간성으로 구현을 했던 것인데, 그럴 필요가 없었다.)
+
+
+
+### :heavy_check_mark: JVM Tuning
+
+**문제가 발생한 날**에 우선 기본적으로 Parallel GC를 사용하는데 `G1GC` 방식으로 변경하였다. 그리고  **최대 Heap Memory도 2배**로 늘려주었다.
+
+이후에 문제를 해결하고 나서 위 설정은 그대로 유지했다.
+
+그리고 이후 OOM 이슈 발생을 대비하여 **HeapDump를 남기는 옵션**을 추가로 적용했다.
+
+```
+-Xms2g -Xmx4g -XX:+UseG1GC -XX:NewRatio=7 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log 
+```
+
+
+
+### :heavy_check_mark: HeapDump 체크
+
+이후에 2일 간격으로 HeapDump를 체크한 결과이다. 메모리 상태가 안정적으로 돌아왔음을 확인할 수 있었다.
+
+#### 08.05 HeapDump
+
+<img src="./img/histogram2.png"/>
+
+
+
+#### 08.07 HeapDump
+
+<img src="./img/histogram3.png"/>
+
+
+
+## 마무리
+
+굉장히 많이 혼났었다. 성능 테스트도 안해봤냐, 기본이 안되어 있다 등..
+
+OOM 이슈는 원인을 바로 찾아내기가 굉장히 어렵다. 보통 개발 단계에서는 발견하기는 어렵다. (물론 고수들은 이런 경우까지 모두 고려해서 코딩한다고 한다. ~~누가 그러더라..~~)
+
+위의 경우도 마찬가지로 개발 단계에서는 문제가 발생하지 않았으니 그냥 넘어갔겠지?
+
+어쨌든 OOM 이슈가 발생했을 때 당황하지 말고 위에처럼 해보고,  2가지만 기억하자.
+
+1. 성능 테스트를 하자
+2. In 쿼리는 되도록 쓰지 말자 (인덱싱도 안되는 단점이 있기도 하다)
+
+끝.
