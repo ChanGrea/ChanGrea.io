@@ -17,3 +17,12 @@
     font-weight: 800;
   }
 }
+
+.top-border-bottom {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0px;
+  height: 8px;
+  background: $theme-gradient;
+  z-index: 2;
+}

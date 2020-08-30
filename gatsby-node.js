@@ -1,6 +1,8 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
+const { redirectTable } = require('./gatsby-meta-config')
+
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
@@ -55,12 +57,21 @@ exports.createPages = ({ graphql, actions }) => {
 }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+  const { createNodeField, createRedirect } = actions
+
+  if (redirectTable) {
+    redirectTable.forEach(({ fromPath, toPath }) =>
+      createRedirect({
+        fromPath,
+        toPath,
+        isPermanent: true,
+        redirectInBrowser: true,
+      })
+    )
+  }
 
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
-
-    console.log(value)
 
     createNodeField({
       name: `slug`,

@@ -9,6 +9,7 @@ module.exports = {
 		github: `ChanGrea`, // Your GitHub account
 		medium: ``, // Your Medium account
 		facebook: `100011457922423`, // Your Facebook account
+		linkedin: ``, // Your LinkedIn account
 	},
 	icon: `content/assets/felog.png`, // Add your favicon
 	keywords: [
