@@ -2,6 +2,8 @@
 title: 'about'
 date: 2020-8-30 22:24:53
 lang: 'ko'
+description: 'resume in korean language'
+thumbnail: ''
 ---
 
 # 이찬영(ChanGrea)
@@ -136,7 +138,7 @@ JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
 | -------- | ------------------------------------------------------------ |
 | period   | 18.03 ~ 18.06                                                |
 | position | 인턴 (RPA 개발)                                              |
-| projects | Metanet MCC, Hana Finance, LS Nikko 등 RPA(Robotic Process Automation) PoC 개발 프로젝트 참여 |
+| projects | Metanet MCC, Hana Finance, LS Nikko<br> 등 RPA(Robotic Process Automation) PoC 개발 프로젝트 참여 |
 
 
 
@@ -147,7 +149,7 @@ JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
 |          |                                          |
 | -------- | ---------------------------------------- |
 | period   | 18.01 ~ 18.02                            |
-| position | 인턴 (사업 기획)                         |
+| position | 인턴 (사업 기획팀)                       |
 | projects | RPA 솔루션 검증 및 사업 계획서 작성 참여 |
 
 

@@ -11,6 +11,14 @@ module.exports = {
 		facebook: `100011457922423`, // Your Facebook account
 		linkedin: ``, // Your LinkedIn account
 	},
+	// thumbnail: `https://jbee.io/jbee-io.png`,
+	thumbnail: '',
+	resume: {
+	  title: 'About ChanGrea',
+	  description: 'docs: Update RESUME.md for introducing myself',
+	//   thumbnail: 'https://jbee.io/about_thumbnail.png',
+	  thumbnail: '',
+	},
 	icon: `content/assets/felog.png`, // Add your favicon
 	keywords: [
 		`blog`,
