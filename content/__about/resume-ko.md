@@ -173,4 +173,4 @@ JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
 
 ### API Gateway와 Kong
 
-- (자료 업로드 TBD)
+- [https://speakerdeck.com/chanyounglee/api-gateway-konggwa-architecture-seolgye](https://speakerdeck.com/chanyounglee/api-gateway-konggwa-architecture-seolgye)
