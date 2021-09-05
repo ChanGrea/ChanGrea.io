@@ -24,24 +24,20 @@ thumbnail: ''
 
 6. **구성원 간에 `투명한 커뮤니케이션`이 이루어지기를 원합니다.**
 
-
-
 |         |                                                            |
 | ------- | ---------------------------------------------------------- |
 | Github  | [https://github.com/changrea](https://github.com/changrea) |
 | Blog    | [https://changrea.io](https://changrea.io)                 |
 | Contact | <k39335@naver.com>                                         |
 
-
-
 # Experiences
 
 ## KT
 
-|          |                                                              |
-| -------- | ------------------------------------------------------------ |
-| period   | 18.10 ~ current                                              |
-| position | Software Engineer / Web Developer                            |
+|          |                                                                      |
+| -------- | -------------------------------------------------------------------- |
+| period   | 18.10 ~ current                                                      |
+| position | Software Engineer / Web Developer                                    |
 | projects | Maum Talk, Review LIVE, RP Viewer, Log Monitoring Based on ELK stack |
 
 ### 1. Maum Talk (마음 Talk)
@@ -51,11 +47,10 @@ thumbnail: ''
 - 20.03 ~ 20.08
 - Angular.js, Gulp, Java, Spring Boot/Security/Batch, JPA, PostgreSQL
 
-
-
 #### Description
 
 - CMS 관리자 페이지 개발 담당
+
   - Boilerplate 기반 개발
   - Frontend : Anuglar.js 사용<br>Backend : Spring Framework와 ORM 기반 개발
 
@@ -67,16 +62,12 @@ thumbnail: ''
   - 앱 개발자와 사업 부서로부터 요구사항 취합 및 결과물 주기적 피드백
   - 서비스 서버 개발자와 공용으로 사용되는 테이블과 필요 항목에 대한 설계 진행
 
-
-
 ### 2. Review LIVE (제품 리뷰 라이브)
 
 크리에이터 및 방송인이 제작한 제품리뷰 영상을 실시간으로 방송, 채팅, 투표 기능을 제공하는 서비스
 
 - 20.07 ~ 20.08
 - Javascript, React, Hooks, Redux, redux-saga, react-router, kakao auth, websocket
-
-
 
 #### Description
 
@@ -91,16 +82,12 @@ thumbnail: ''
   - 기능 별 테스트 케이스 문서 작성 (표) 및 Unit 테스트
   - 테스트 케이스와 사전 정의된 Flow Chart로 통합 테스트 진행
 
-
-
 ### 3. RP Viewer (원내비 경로 분석 툴)
 
 JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
 
-- 19.04 ~ 19.12
+- 19.10 ~ 20.01
 - Javascript, React, Redux, redux-thunk, Atomic Design
-
-
 
 #### Description
 
@@ -113,36 +100,19 @@ JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
   - 사내 Git, Jenkins 연동으로 원버튼 배포 시스템 구축 (관련 [블로그 글](https://changrea.io/etc/nginx-config-for-react/))
   - Convention, EsLint 적용 자동화를 위한 prettier설정 (관련 [블로그 글](https://changrea.io/web/eslint-prettier/))
 
-
-
-### 4. Log Monitoring Based on ELK stack
-
-여러 서버로부터 수집된 로그를 보여주고, 서버의 상태를 관제할 수 있는 ELK stack 기반의 로그 모니터링 시스템
-
-- 18.11 ~ 18.12
-- Javascript, Vue, vue-router, bootstrap
-
-
-
 #### Description
 
 - 4인 프로젝트(Front 2명, Back 2명)로 Front-end 개발 담당, Log 시각화 화면 개발
 - 로그 시각화 툴로 Highcharts 사용
 - 팀 내 Vue 스터디 진행
 
-
-
 ## Deawoo Information System (대우 정보 시스템)
 
-|          |                                                              |
-| -------- | ------------------------------------------------------------ |
-| period   | 18.03 ~ 18.06                                                |
-| position | 인턴 (RPA 개발)                                              |
+|          |                                                                                                   |
+| -------- | ------------------------------------------------------------------------------------------------- |
+| period   | 18.03 ~ 18.06                                                                                     |
+| position | 인턴 (RPA 개발)                                                                                   |
 | projects | Metanet MCC, Hana Finance, LS Nikko<br> 등 RPA(Robotic Process Automation) PoC 개발 프로젝트 참여 |
-
-
-
-
 
 ## Hansol PNS & Inticube (한솔 PNS & 인티큐브)
 
@@ -151,8 +121,6 @@ JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
 | period   | 18.01 ~ 18.02                            |
 | position | 인턴 (사업 기획팀)                       |
 | projects | RPA 솔루션 검증 및 사업 계획서 작성 참여 |
-
-
 
 # CoP 학습조직 활동
 
