@@ -34,13 +34,27 @@ thumbnail: ''
 
 ## KT
 
-|          |                                                                      |
-| -------- | -------------------------------------------------------------------- |
-| period   | 18.10 ~ current                                                      |
-| position | Software Engineer / Web Developer                                    |
-| projects | Maum Talk, Review LIVE, RP Viewer, Log Monitoring Based on ELK stack |
+|          |                                                              |
+| -------- | ------------------------------------------------------------ |
+| period   | 18.10 ~ current                                              |
+| position | Software Engineer / Web Developer                            |
+| projects | Android tv 기반 KT Ollehtv 홈포털 개발, Maum Talk, Review LIVE, RP Viewer, Log Monitoring Based on ELK stack |
 
-### 1. Maum Talk (마음 Talk)
+### 1. Android tv 기반 KT Ollehtv 홈포털 개발
+
+Android tv OS 기반 셋톱박스 '기가지니A'에 탑재되는 홈포털 앱 개발
+
+- 20.08 ~ 21.11
+- Android, Java, Leanback, RxJava, DataBinding
+
+#### Description
+
+- 홈포털 **설정** 화면 UI 및 기능 개발
+- **사용자 프로필, 공지/알림, 가입내역 등** 홈포털 마이메뉴 서브 기능 개발
+- **Gigagenie Launcher 앱** 연동
+- 홈/서브홈 UI 구성을 위한 **데이터 관리 매니저** 개발
+
+### 2. Maum Talk (마음 Talk)
 
 목소리를 잃은 농인을 대상으로 AI 기술로 구현된 목소리로 소통할 수 있는 통화 애플리케이션.
 
@@ -62,7 +76,7 @@ thumbnail: ''
   - 앱 개발자와 사업 부서로부터 요구사항 취합 및 결과물 주기적 피드백
   - 서비스 서버 개발자와 공용으로 사용되는 테이블과 필요 항목에 대한 설계 진행
 
-### 2. Review LIVE (제품 리뷰 라이브)
+### 3. Review LIVE (제품 리뷰 라이브)
 
 크리에이터 및 방송인이 제작한 제품리뷰 영상을 실시간으로 방송, 채팅, 투표 기능을 제공하는 서비스
 
@@ -82,7 +96,7 @@ thumbnail: ''
   - 기능 별 테스트 케이스 문서 작성 (표) 및 Unit 테스트
   - 테스트 케이스와 사전 정의된 Flow Chart로 통합 테스트 진행
 
-### 3. RP Viewer (원내비 경로 분석 툴)
+### 4. RP Viewer (원내비 경로 분석 툴)
 
 JQuery 기반 경로 분석 툴을 React 기반으로 마이그레이션
 
