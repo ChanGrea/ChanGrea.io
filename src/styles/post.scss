@@ -1,22 +1,76 @@
 blockquote {
-    position: relative;
-    margin-top: 12px;
-    margin-bottom: 30px;
-    padding: 12px 8px 0px 36px;
-  
-    border-left: none;
-    font-weight: 300;
-  
-    &::before {
-      position: absolute;
-      top: 16px;
-      left: 4px;
-      display: inline-block;
-      background-size: contain;
-      opacity: 0.2;
-      width: 22px;
-      height: 22px;
-      z-index: 1;
-      content: '';
+  position: relative;
+  margin-top: 12px;
+  margin-bottom: 30px;
+  padding: 12px 8px 0px 36px;
+
+  border-left: none;
+  font-weight: 300;
+
+  &::before {
+    position: absolute;
+    top: 16px;
+    left: 4px;
+    display: inline-block;
+    background-size: contain;
+    opacity: 0.2;
+    width: 22px;
+    height: 22px;
+    z-index: 1;
+    content: '';
+  }
+}
+
+.blog-post-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .content {
+    flex-grow: 0;
+    max-width: calc(100% * 2 / 3);
+    flex-basis: calc(100% * 2 / 3);
+  }
+  .table-of-content {
+    top: 0;
+    flex-grow: 0;
+    max-width: calc(100% / 3);
+    flex-basis: calc(100% / 3);
+    margin-left: 1rem;
+    max-width: 18rem;
+    max-height: calc(100vh - 200px);
+    position: sticky;
+    overflow: auto;
+    padding-top: 1rem;
+
+    ul {
+      list-style: none;
+      margin-bottom: 32px;
+      ul {
+        border-left: 2px solid #dddddf;
+        margin: 0 0 0 20px;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 5px;
+        margin-left: 10px;
+      }
+    }
+
+    a {
+      border-radius: 6px;
+      color: rgb(59, 69, 78);
+      display: block;
+      overflow: hidden;
+      padding: 4px 8px;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      transition: all 0.25s ease 0s;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #cfd8dc;
+      }
     }
   }
+}

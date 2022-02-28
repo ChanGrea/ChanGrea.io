@@ -1,5 +1,13 @@
 const metaConfig = require('./gatsby-meta-config')
 
+const myCustomQueries = {
+  xs: '(max-width: 320px)',
+  sm: '(max-width: 720px)',
+  md: '(max-width: 950px)',
+  l: '(max-width: 1536px)',
+  portrait: '(orientation: portrait)',
+};
+
 module.exports = {
   siteMetadata: metaConfig,
   plugins: [
@@ -28,6 +36,17 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          {
+            resolve: `gatsby-remark-table-of-contents`,
+            options: {
+              exclude: "Table of Contents",
+              tight: false,
+              ordered: false,
+              fromHeading: 1,
+              toHeading: 6,
+              className: "table-of-contents"
+            },
+          },
           {
             resolve: `gatsby-remark-katex`,
             options: {
@@ -64,6 +83,12 @@ module.exports = {
           `gatsby-remark-smartypants`,
           `gatsby-remark-autolink-headers`,
           `gatsby-remark-emoji`,
+          {
+            resolve: `gatsby-plugin-breakpoints`,
+            options: {
+                queries: myCustomQueries,
+            },
+        },
         ],
       },
     },

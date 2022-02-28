@@ -13,7 +13,9 @@ import { Bio } from '../components/bio'
 import { PostNavigator } from '../components/post-navigator'
 import { Disqus } from '../components/disqus'
 import { Utterances } from '../components/utterances'
+import TableOfContents from '../components/TableOfContents'
 import * as ScrollManager from '../utils/scroll'
+import { useBreakpoint } from 'gatsby-plugin-breakpoints';
 
 import '../styles/code.scss'
 import '../styles/post.scss'
@@ -32,33 +34,37 @@ export default ({ data, pageContext, location }) => {
   const thumbnailSrc = thumbnail
     ? `${siteUrl}${thumbnail.childImageSharp.fixed.src}`
     : undefined
+  const breakpoints = useBreakpoint();
 
   return (
-    <Layout location={location} title={title}>
-      <Head
-        title={postTitle}
-        description={post.excerpt}
-        thumbnail={thumbnailSrc}
-      />
-      <PostTitle title={postTitle} />
-      <PostDate date={date} />
-      <PostContainer html={post.html} />
-      <SocialShare title={postTitle} author={author} />
-      {!!sponsor.buyMeACoffeeId && (
-        <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
-      )}
-      <Elements.Hr />
-      <Bio />
-      <PostNavigator pageContext={pageContext} />
-      {!!disqusShortName && (
-        <Disqus
-          post={post}
-          shortName={disqusShortName}
-          siteUrl={siteUrl}
-          slug={pageContext.slug}
+    <Layout location={location} title={title} className={breakpoints.md ? '' : 'blog-post-container'}>
+      <div className={breakpoints.md ? '' : 'content'}>
+        <Head
+          title={postTitle}
+          description={post.excerpt}
+          thumbnail={thumbnailSrc}
         />
-      )}
-      {!!utterances && <Utterances repo={utterances} />}
+        <PostTitle title={postTitle} />
+        <PostDate date={date} />
+        <PostContainer html={post.html} />
+        <SocialShare title={postTitle} author={author} />
+        {!!sponsor.buyMeACoffeeId && (
+          <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
+        )}
+        <Elements.Hr />
+        <Bio />
+        <PostNavigator pageContext={pageContext} />
+        {!!disqusShortName && (
+          <Disqus
+            post={post}
+            shortName={disqusShortName}
+            siteUrl={siteUrl}
+            slug={pageContext.slug}
+          />
+        )}
+        {!!utterances && <Utterances repo={utterances} />}
+      </div>
+      {breakpoints.md ? null : <TableOfContents content={data.markdownRemark.tableOfContents} />}
     </Layout>
   )
 }
@@ -94,6 +100,7 @@ export const pageQuery = graphql`
           }
         }
       }
+      tableOfContents
     }
   }
 `
