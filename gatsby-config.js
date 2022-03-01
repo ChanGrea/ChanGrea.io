@@ -3,7 +3,7 @@ const metaConfig = require('./gatsby-meta-config')
 const myCustomQueries = {
   xs: '(max-width: 320px)',
   sm: '(max-width: 720px)',
-  md: '(max-width: 950px)',
+  md: '(max-width: 998px)',
   l: '(max-width: 1536px)',
   portrait: '(orientation: portrait)',
 };
