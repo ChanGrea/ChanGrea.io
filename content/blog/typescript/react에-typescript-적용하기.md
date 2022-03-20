@@ -6,7 +6,7 @@ category: typescript
 
 > [이전 포스팅](https://changrea.io/typescript/typescript_basic_and_config/#%EB%A7%88%EB%AC%B4%EB%A6%AC)에서 Typescript 기반의 React 개발 환경 구성에 대해 포스팅을 하겠다고 해서, 이번 포스팅에서 다뤄보려고 한다.
 
- ## 프로젝트 생성
+## 프로젝트 생성
 
 ### 프로젝트 생성
 
@@ -14,12 +14,14 @@ category: typescript
 $ mkdir react-ts
 ```
 
-### 프로젝트 구조 
+### 프로젝트 구조
 
 ```markdown
 .
 ├── .babelrc
+├── .eslintrc
 ├── .gitignore
+├── .prettierrc
 ├── README.md
 ├── index.html
 ├── package.json
@@ -33,24 +35,20 @@ $ mkdir react-ts
 └── yarn.lock
 ```
 
-
-
 ## Typescript 설정
 
 ### npm init
 
 ```bash
-$ npm init 
+$ npm init
 ```
 
 `npm init` 을 통해 **package.json**을 생성해준다.
 
-
-
 ### Typescript와 React 관련 package 설치
 
 ```bash
-$ yarn add react react-dom 
+$ yarn add react react-dom
 $ yarn add -D typescript @types/react @types/react-dom
 ```
 
@@ -59,8 +57,6 @@ $ yarn add -D typescript @types/react @types/react-dom
 - **typescript** : Typescript 언어 사용을 위한 package
 - **@types/react** : react에 대한 Typescript 정의
 - **@types/react-dom** : react(react-dom)에 대한 Typescript 정의
-
-
 
 ## webpack 설정
 
@@ -78,15 +74,14 @@ $ yarn add -D webpack webpack-cli webpack-dev-server css-loader html-webpack-plu
 - **Mini-css-extract-plugin** : css 파일을 여러개의 파일로 추출하는 플러그인
 - **ts-loader** : webpack이 typescript를 해석하기 위한 로더
 
-
-
 ### webpack.config.js
 
 ```javascript
-const prod = process.env.NODE_ENV === 'production';
+const prod = process.env.NODE_ENV === 'production'
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   mode: prod ? 'production' : 'development',
@@ -108,7 +103,10 @@ module.exports = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
-    ]
+    ],
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   devtool: prod ? undefined : 'source-map',
   plugins: [
@@ -116,9 +114,9 @@ module.exports = {
       template: 'index.html',
     }),
     new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin(),
   ],
-};
-
+}
 ```
 
 #### :bookmark: webpack에서 타입스크립트를 읽을 수 있는 Loader
@@ -132,9 +130,7 @@ module.exports = {
    - [HMR (hot module reloading)](https://github.com/TypeStrong/ts-loader#hot-module-replacement) 사용이 불가능하다.
    - 폴리필 환경 설정을 하려면, 추가적으로 babel 설정이 필요하다.
 
->  타입 체킹을 하지 않을 경우, webpack-dev-server, 빌드 환경 등에서 type error 를 잡아 낼 수 없다.
-
-
+> 타입 체킹을 하지 않을 경우, webpack-dev-server, 빌드 환경 등에서 type error 를 잡아 낼 수 없다.
 
 ## babel 설정
 
@@ -177,8 +173,6 @@ $ yarn add -D @babel/core @babel/preset-env @babel/preset-react @babel/preset-ty
   ]
 }
 ```
-
-
 
 ## 마무리
 
