@@ -24,20 +24,28 @@ thumbnail: ''
 
 6. **구성원 간에 `투명한 커뮤니케이션`이 이루어지기를 원합니다.**
 
-|         |                                                            |
-| ------- | ---------------------------------------------------------- |
-| Github  | [https://github.com/changrea](https://github.com/changrea) |
-| Blog    | [https://changrea.io](https://changrea.io)                 |
-| Contact | <k39335@naver.com>                                         |
+|         |                                                                |
+| ------- | -------------------------------------------------------------- |
+| Github  | [https://github.com/changrea](https://github.com/changrea)     |
+| Blog    | [https://changrea.netlify.app/](https://changrea.netlify.app/) |
+| Contact | <k3933525@gmail.com>                                           |
 
 # Experiences
 
+## Naver Cloud
+
+|          |                                                               |
+| -------- | ------------------------------------------------------------- |
+| period   | 22.08 ~ current                                               |
+| position | Frontend Developer                                            |
+| projects | Naver Works의 Admin, Partner Console, webtalk(메세지) FE 개발 |
+
 ## KT
 
-|          |                                                              |
-| -------- | ------------------------------------------------------------ |
-| period   | 18.10 ~ current                                              |
-| position | Software Engineer / Web Developer                            |
+|          |                                                                                                              |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
+| period   | 18.10 ~ 22.08                                                                                                |
+| position | Software Engineer / Web Developer                                                                            |
 | projects | Android tv 기반 KT Ollehtv 홈포털 개발, Maum Talk, Review LIVE, RP Viewer, Log Monitoring Based on ELK stack |
 
 ### 1. Android tv 기반 KT Ollehtv 홈포털 개발
